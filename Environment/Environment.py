@@ -14,13 +14,3 @@ class BaseEnviroment:
         self.Grid_ = [[0]*50]*50
         self.Scarity_ = 0.1
     
-    def GenerateFood(self):
-        for row in self.Grid_:
-            for  location in row:
-                placeFood = random.random()
-                if placeFood < self.Scarity_:
-                    location = 1
-    
-
-    def runCycle(self, entities:list):
-        pass
