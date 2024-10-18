@@ -13,3 +13,6 @@ class indiv:
 
     def isAlive(self):
         return self.alive
+    
+    def runActions(self, simStep):
+        pass
