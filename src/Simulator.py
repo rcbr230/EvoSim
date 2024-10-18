@@ -22,6 +22,6 @@ while generation < MAX_GENERATIONS:
     for i in range(MAX_STEPS):
         for index in range(1, POP_SIZE):
             if peeps.getIndividual(index).isAlive():
-                simStep(peeps.getIndividual(index))
+                pass # Call a thread to run the child here.
 
     generation += 1
