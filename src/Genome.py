@@ -42,21 +42,41 @@
 #        Source(sensory or internal node)    Which neuron is it coming from(this num % num of neurons)   Sink type(where is the connection pointing to(action or internal)) CONT,
 #           011010                                                              0001111111100011
 #          Which neuron is it going to(this num % num of neurons          Weight. Divide this number by 10000.
+# full gene 01110001110110100001111111100011
+
 import random
 
 class Genome:
     SENSORY_NEURONS = 18
     INTERNAL_NEURONS = 3
     ACTION_NEURONS = 9  
+    MIN_GENE_LENGTH = 3
+    MAX_GENE_LENGTH = 10
+    GenomeList = []
+
     def makeRandomGene(self):
         gene = Gene()
         gene.source = bool(random.randint(0,1))
-        gene.sourceNum = random.randint(0,255) 
+        gene.sourceNum = random.randint(0,127) # 2^7-1
         gene.sinkType = bool(random.randint(0,1))
-        gene.sinkNum = random.randint(0,255)
-        gene.weight = 0
+        gene.sinkNum = random.randint(0,127) # 2^7 -1
+        gene.weight = random.randint(0,65535) # 2^16 -1
+
+        return gene
+
+    def makeRandomGenome(self):
+        genome = Genome()
+        genomeLength = random.randint(self.MIN_GENE_LENGTH, self.MAX_GENE_LENGTH)
+        for i in range(genomeLength):
+            self.GenomeList.append(self.makeRandomGene())
+
+    def printGenome(self):
+        for i in self.GenomeList:
+            i.printHex()
+
     def createWiring(self):
         pass
+    
 
 class Gene:
 
@@ -66,3 +86,7 @@ class Gene:
         self.sinkType = 0
         self.sinkNum = 0
         self.weight = 0
+
+    def printHex(self):
+        strFormat = format(self.source, 'b') + format(self.sourceNum, '07b') +  format(self.sinkType, 'b') +  format(self.sinkNum, '07b') +  format(self.weight, '016b')
+        print(hex(int(strFormat)))
