@@ -5,12 +5,6 @@ This is the top level of the simulation that a user can interact with.
 """
 from Grid import Grid
 from Peeps import Peeps
-
-def simStepOneIndividual(indiv, simStep):
-    indiv.age += 1
-    indiv.runActions(simStep)
-
-
 MAX_GENERATIONS = 10
 MAX_STEPS = 30
 POP_SIZE = 1000
@@ -20,12 +14,25 @@ grid = Grid(GRID_X,GRID_Y)
 peeps = Peeps(POP_SIZE)
 generation = 0
 
-while generation < MAX_GENERATIONS:
+def simStepOneIndividual(indiv, simStep):
+    indiv.age += 1
+    indiv.runActions(simStep)
 
-    for i in range(MAX_STEPS):
-        for index in range(1, POP_SIZE):
-            if peeps.getIndividual(index).isAlive():
-                simStepOneIndividual(peeps.getIndividual(index),i)
+def CreateGen0():
+    for i in range(1,POP_SIZE+1):
+        loc = grid.FindEmptyLocation()
+        peeps.initPeep(i,loc)
+        grid.setIndex(loc,i)
 
-    generation += 1
+# init and place the first generation onto the grid!!!
+CreateGen0()
+grid.DrawGrid()
+
+
+# while generation < MAX_GENERATIONS:
+#     for i in range(MAX_STEPS):
+#         for index in range(1, POP_SIZE+1):
+#             if peeps.getIndividual(index).isAlive():
+#                 simStepOneIndividual(peeps.getIndividual(index),i)
+#     generation += 1
 
