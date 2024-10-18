@@ -7,7 +7,8 @@ from Grid import Grid
 from Peeps import Peeps
 
 def simStepOneIndividual(indiv, simStep):
-    pass
+    indiv.age += 1
+    indiv.runActions(simStep)
 
 
 MAX_GENERATIONS = 10

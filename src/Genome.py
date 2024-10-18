@@ -38,9 +38,31 @@
 
     IGNORE PHERAMONES FOR NOW
     """
-
+# GENE EX:             0                                           1110001                                    1   
+#        Source(sensory or internal node)    Which neuron is it coming from(this num % num of neurons)   Sink type(where is the connection pointing to(action or internal)) CONT,
+#           011010                                                              0001111111100011
+#          Which neuron is it going to(this num % num of neurons          Weight. Divide this number by 10000.
+import random
 
 class Genome:
-    
+    SENSORY_NEURONS = 18
+    INTERNAL_NEURONS = 3
+    ACTION_NEURONS = 9  
+    def makeRandomGene(self):
+        gene = Gene()
+        gene.source = bool(random.randint(0,1))
+        gene.sourceNum = random.randint(0,255) 
+        gene.sinkType = bool(random.randint(0,1))
+        gene.sinkNum = random.randint(0,255)
+        gene.weight = 0
     def createWiring(self):
         pass
+
+class Gene:
+
+    def __init__(self):
+        self.source = 0
+        self.sourceNum = 0
+        self.sinkType = 0
+        self.sinkNum = 0
+        self.weight = 0
