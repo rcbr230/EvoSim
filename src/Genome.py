@@ -1,2 +1,4 @@
 class Genome:
-    pass
+    
+    def createWiring(self):
+        pass

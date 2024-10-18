@@ -10,11 +10,13 @@ class Grid:
     EMPTY = 0
     BARRIER = 0xffff
     
+    # create a grid of size x,y all filled with zeros
     def __init__(self,x,y):
         self.sizeX = x
         self.sizeY = y
         self.gridInfo = [[0 for i in range(self.sizeX)] for i in range(self.sizeY)]
 
+    # find an empty location on the grid. No barriers or other individuals.
     def FindEmptyLocation(self):
 
         while True:

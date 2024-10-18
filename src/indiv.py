@@ -9,4 +9,7 @@ class indiv:
         self.loc = loc_
         self.age = 0
         self.lastMoveDir = random.randint(0,3) # 0-up, 1-right, 2-down, 3-left
+        genome.createWiring()
 
+    def isAlive(self):
+        return self.alive
