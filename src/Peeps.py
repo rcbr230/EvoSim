@@ -1,6 +1,6 @@
 
-
-class Entity:
+from indiv import indiv
+class Peeps:
 
     """
     Sensory Inputs:
@@ -38,4 +38,10 @@ class Entity:
     MRL = move left/right (+/-)
     MX = move east/west (+/-)
     MY = move north/south (+/-)
+
+
+    IGNORE PHERAMONES FOR NOW
     """
+
+    def __init__(self,population:int):
+        self.individuals = [indiv] * population+1 # index 0 cannot be used, so add 1
