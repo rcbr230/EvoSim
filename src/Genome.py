@@ -1,8 +1,5 @@
 """
     Sensory Inputs:
-    Slr = pheromone gradient left-right
-    Sfd = pheromone gradient forward
-    Sg = pheromone density
     Age = age
     Rnd = random input
     Blr = blockage left-right
@@ -45,6 +42,10 @@
 # full gene 01110001110110100001111111100011
 
 import random
+# w = action effects the environment!
+
+
+
 
 class Genome:
     SENSORY_NEURONS = 18
