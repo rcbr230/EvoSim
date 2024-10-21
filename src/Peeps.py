@@ -7,7 +7,7 @@ class Peeps:
         self.individuals = [None] * (population+1) # index 0 cannot be used, so add 1
         
     def initPeep(self,index,loc):
-        self.individuals[index] = indiv(loc)
+        self.individuals[index] = indiv(loc,index)
 
     def getIndividual(self,index):
         return self.individuals[index]

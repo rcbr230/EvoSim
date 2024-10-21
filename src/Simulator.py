@@ -1,4 +1,3 @@
-
 """
 This is the top level of the simulation that a user can interact with.
 
@@ -19,7 +18,7 @@ generation = 0
 
 def simStepOneIndividual(indiv, simStep, instance):
     indiv.age += 1
-    indiv.runActions(simStep, grid, instance)
+    indiv.feedForward(simStep)
 
 def CreateGen0():
     for i in range(1,POP_SIZE+1):
