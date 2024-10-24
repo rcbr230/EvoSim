@@ -64,7 +64,9 @@ class indiv:
             "BD" : "",
             "Ly" : ""
         }
+        # GENERATE NEURAL NET FROM THE GENOME CREATED
 
+    # CREATE FUNCtiON TO UPDATE SENSORY NODES
     def isAlive(self):
         return self.alive
     
@@ -83,7 +85,7 @@ class indiv:
             if(gene.source == 1):
                 # insert stuff here!!!!
                 pass
-        
+    # CREATE ACTION FUNCTIONS  
 class Action(Enum):
     MOVE_X=0,                    # W +- X component of movement
     MOVE_Y=1,                    # W +- Y component of movement

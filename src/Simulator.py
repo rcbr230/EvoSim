@@ -44,6 +44,7 @@ while generation < MAX_GENERATIONS:
         grid.DrawGrid(canvas)
         root.update()
         time.sleep(0.5)
+    # CREATE NEW GEN FROM PREV GEN
 
     generation += 1
 root.mainloop()
