@@ -12,6 +12,25 @@ nnet - this is what uses the genome
 reponsiveness
 last move direction
 
+sensory Inputs:
+Age = age
+    Rnd = random input
+    Blr = blockage left-right
+    Osc = oscillator
+    Bfd = blockage forward
+    Plr = population gradient left-right
+    Pop = population density
+    Pfd = population gradient forward
+    LPf = population long-range forward
+    LMy = last movement Y
+    LBf = blockage long-range forward
+    LMx = last movement X
+    BDy = north/south border distance
+    Gen = genetic similarity of forward neighbor
+    BDx = east/west border distance
+    Lx = east/west world location
+    BD = nearest border distance
+    Ly = north/south world location
 """
 class indiv:
     
@@ -26,17 +45,45 @@ class indiv:
         g.makeRandomGenome()
         self.genome = g
         self.genome.createWiring()
+        self.sensoryInputs = {
+            "Rnd" : "", 
+            "Blr" : "",
+            "Osc" : "",
+            "Bfd" : "",
+            "Plr" : "",
+            "Pop" : "",
+            "Pfd" : "",
+            "LPf" : "",
+            "LMy" : "",
+            "LBf" : "",
+            "LMx" : "",
+            "BDy" : "",
+            "Gen" : "",
+            "BDx" : "",
+            "Lx" : "",
+            "BD" : "",
+            "Ly" : ""
+        }
 
     def isAlive(self):
         return self.alive
     
     # use nnet to generate actions, and perform them
-    def feedForward(self, simStep):
+    def feedForward(self, simStep, grid):
         actions = list()
         neuronOutputsDone = False
 
+        # compute actions using genome here!
+        
+        self.GenSensoryInputs(grid)
         return actions
     
+    def GenSensoryInputs(self, grid):
+        for gene in self.genome.GenomeList:
+            if(gene.source == 1):
+                # insert stuff here!!!!
+                pass
+        
 class Action(Enum):
     MOVE_X=0,                    # W +- X component of movement
     MOVE_Y=1,                    # W +- Y component of movement

@@ -18,7 +18,7 @@ generation = 0
 
 def simStepOneIndividual(indiv, simStep, instance):
     indiv.age += 1
-    indiv.feedForward(simStep)
+    indiv.feedForward(simStep,grid)
 
 def CreateGen0():
     for i in range(1,POP_SIZE+1):
