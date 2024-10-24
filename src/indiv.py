@@ -26,7 +26,7 @@ Age = age
     LBf = blockage long-range forward
     LMx = last movement X
     BDy = north/south border distance
-    Gen = genetic similarity of forward neighbor
+    Gen = genetic similarity of forward neighbor 
     BDx = east/west border distance
     Lx = east/west world location
     BD = nearest border distance
@@ -44,7 +44,7 @@ class indiv:
         g = Genome()
         g.makeRandomGenome()
         self.genome = g
-        self.genome.createWiring()
+        # self.genome.createWiring()
         self.sensoryInputs = {
             "Rnd" : "", 
             "Blr" : "",
