@@ -1,4 +1,5 @@
 
+import math
 import random
 from Genome import Genome
 from NeuralNet import NeuralNet
@@ -93,7 +94,7 @@ class indiv:
         SENSORY_NODES = 18
         ret = [-1]*18
         for i in range(len(self.NeuronList)):
-            if i % 3 != 0:
+            if i % 3 != 0 and self.NeuronList[i][1] != NodeVal.Sensory:
                 continue
             
             # check what sensory nodes
@@ -136,65 +137,91 @@ class indiv:
                         ret[4] = 1
             #Plr - pop  gradiant right
             elif self.NeuronList[i] == 5:
+                # implement later--------------------------------------------------------
                 pass
+            #Pop - pop density
             elif self.NeuronList[i] == 6:
+                # implement later--------------------------------------------------------
                 pass
+            #Pfd - pop gradient forward
             elif self.NeuronList[i] == 7:
+                # implement later--------------------------------------------------------
                 pass
+            #LPf - pop long-range forward
             elif self.NeuronList[i] == 8:
+                # implement later--------------------------------------------------------
                 pass
+            #LMy - last movement y
             elif self.NeuronList[i] == 9:
+                # implement later--------------------------------------------------------
                 pass
+            #LBf - long-range block foward
             elif self.NeuronList[i] == 10:
+                # implement later--------------------------------------------------------
                 pass
+            #LMx - last movement x
             elif self.NeuronList[i] == 11:
+                # implement later--------------------------------------------------------
                 pass
+            #BDy - boarder distance y
             elif self.NeuronList[i] == 12:
-                pass
+                ret[12] = min(self.loc[1], len(grid.gridinfo[0])-self.loc[1])
+            #Gen - genetic similarity to forward indiv
             elif self.NeuronList[i] == 13:
+                # implement later--------------------------------------------------------
                 pass
+            #BDx - boarder distance x
             elif self.NeuronList[i] == 14:
-                pass
+                ret[14] = min(self.loc[0], len(grid.gridinfo[0])-self.loc[0])
+            #Lx - x location
             elif self.NeuronList[i] == 15:
-                pass
+                ret[15] = self.loc[0]
+            #BD - nearest boarder dist
             elif self.NeuronList[i] == 16:
-                pass
+                ret[16] = min(min(self.loc[0], len(grid.gridinfo[0])-self.loc[0]),min(self.loc[1], len(grid.gridinfo[0])-self.loc[1]))
+            #Ly -  y loc
             elif self.NeuronList[i] == 17:
-                pass
+                ret[17] = self.loc[1]
             
     def FindNeurons(self):
         TOTAL_SENSORY  = 18
         TOTAL_INTERNAL = 6
         TOTAL_ACTION   = 9
 
-        # APPENDED SO THAT: src, weight, dest
+        # APPENDED SO THAT: (src,nodeVal), weight, (src,nodeVal)
         ret = []
         for i in self.genome.GenomeList:
             # FIRST NODE:
             # 0 = sensory
             if i.source == 0:
                 node = i.sourceNum % TOTAL_SENSORY
-                ret.append(node)
+                val = NodeVal.Sensory
+                ret.append((node,val))
             # it's 1, 1 = internal
             else:
                 node = i.sourceNum % TOTAL_INTERNAL
+                val = NodeVal.Internal
+                ret.append((node,val))
                 ret.append(node)
             
             ret.append(i.weight)
 
             # SECOND NODE:
             # 0 = internal
-            if i.source == 0:
-                node = i.sinkType % TOTAL_INTERNAL
-                ret.append(node)
+            if i.sink == 0:
+                node = i.sinkNum % TOTAL_INTERNAL
+                val = NodeVal.Internal
+                ret.append((node,val))
             # it's 1, 1 = action
             else:
                 node = i.sinkNum % TOTAL_ACTION
-                ret.append(node)
+                val = NodeVal.Action
+                ret.append((node,val))
 
         return ret
             
-
+    def determineAction(self, startIndex):
+        pass
 
     def CreateWiring(self):
         self.NeuronList = self.FindNeurons()
@@ -203,3 +230,8 @@ class indiv:
     def RandMutation(self):
         pass
         #implement later.
+
+class NodeVal(Enum):
+    Sensory  = 0
+    Internal = 1
+    Action   = 2
