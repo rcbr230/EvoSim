@@ -2,6 +2,7 @@
 import random
 from Genome import Genome
 from NeuralNet import NeuralNet
+from enum import Enum
 
 """
 alive
@@ -12,7 +13,7 @@ reponsiveness
 last move direction
 
 sensory Inputs:
-Age = age
+    Age = age
     Rnd = random input
     Blr = blockage left-right
     Osc = oscillator
@@ -49,6 +50,7 @@ class indiv:
         self.index = index_
         self.loc = loc_
         self.age = 0
+        self.curOsc = True
         self.nnet = NeuralNet()
         self.lastMoveDir = random.randint(0,3) # 0-up, 1-right, 2-down, 3-left
         g = Genome()
@@ -82,37 +84,122 @@ class indiv:
     
     # use nnet to generate actions, and perform them
     def feedForward(self, simStep, grid):
-        actions = list()
-        neuronOutputsDone = False
 
         # compute actions using genome here!
-        
-        self.GenSensoryInputs(grid)
-        return actions
+        self.GenSensoryInputs(simStep,grid)
     
-    def GenSensoryInputs(self, grid):
-        for gene in self.genome.GenomeList:
-            if(gene.source == 1):
-                # insert stuff here!!!!
-                pass
-    # CREATE ACTION FUNCTIONS  
-class Action(Enum):
-    MOVE_X=0,                    # W +- X component of movement
-    MOVE_Y=1,                    # W +- Y component of movement
-    MOVE_FORWARD=2,              # W continue last direction
-    MOVE_RL=3,                   # W +- component of movement
-    MOVE_RANDOM=4,               # W
-    SET_OSCILLATOR_PERIOD=5,     # I
-    SET_LONGPROBE_DIST=6,        # I
-    SET_RESPONSIVENESS=7,        # I
-    EMIT_SIGNAL0=8,              # W
-    MOVE_EAST=9,                 # W
-    MOVE_WEST=10,                # W
-    MOVE_NORTH=11,               # W
-    MOVE_SOUTH=12,               # W
-    MOVE_LEFT=13,                # W
-    MOVE_RIGHT=14,               # W
-    MOVE_REVERSE=15,             # W
-    NUM_ACTIONS=16,       # <<----------------- END OF ACTIVE ACTIONS MARKER
 
+    def GenSensoryInputs(self, simStep, grid):
+        SENSORY_NODES = 18
+        ret = [-1]*18
+        for i in range(len(self.NeuronList)):
+            if i % 3 != 0:
+                continue
+            
+            # check what sensory nodes
+            #AGE
+            if self.NeuronList[i]   == 0:
+                ret[0] = simStep
+            #RND
+            elif self.NeuronList[i] == 1:
+                ret[1] = random.randint(0,1000)
+            #BLR blockage left-right
+            elif self.NeuronList[i] == 2:
+                ret[2] = grid.gridInfo[self.loc[0]+1] + grid.gridInfo[self.loc[0]-1]
+                if(ret != 0):
+                    ret[2] = 1
+            #OSC
+            elif self.NeuronList[i] == 3:
+                ret[3] = int(self.curOsc)
+                self.curOsc = not self.curOsc
+            #BFD 
+            elif self.NeuronList[i] == 4:
+                #up
+                if self.lastMoveDir == 0:
+                    ret[4] = grid.gridInfo[self.loc[1]+1]
+                    if(ret != 0):
+                        ret[4] = 1
+                #down
+                elif self.lastMoveDir == 0:
+                    ret[4] = grid.gridInfo[self.loc[1]-1]
+                    if(ret != 0):
+                        ret[4] = 1
+                #right
+                elif self.lastMoveDir == 0:
+                    ret[4] = grid.gridInfo[self.loc[0]+1]
+                    if(ret != 0):
+                        ret[4] = 1
+                #left
+                elif self.lastMoveDir == 0:
+                    ret[4] = grid.gridInfo[self.loc[0]-1]
+                    if(ret != 0):
+                        ret[4] = 1
+            #Plr - pop  gradiant right
+            elif self.NeuronList[i] == 5:
+                pass
+            elif self.NeuronList[i] == 6:
+                pass
+            elif self.NeuronList[i] == 7:
+                pass
+            elif self.NeuronList[i] == 8:
+                pass
+            elif self.NeuronList[i] == 9:
+                pass
+            elif self.NeuronList[i] == 10:
+                pass
+            elif self.NeuronList[i] == 11:
+                pass
+            elif self.NeuronList[i] == 12:
+                pass
+            elif self.NeuronList[i] == 13:
+                pass
+            elif self.NeuronList[i] == 14:
+                pass
+            elif self.NeuronList[i] == 15:
+                pass
+            elif self.NeuronList[i] == 16:
+                pass
+            elif self.NeuronList[i] == 17:
+                pass
+            
+    def FindNeurons(self):
+        TOTAL_SENSORY  = 18
+        TOTAL_INTERNAL = 6
+        TOTAL_ACTION   = 9
+
+        # APPENDED SO THAT: src, weight, dest
+        ret = []
+        for i in self.genome.GenomeList:
+            # FIRST NODE:
+            # 0 = sensory
+            if i.source == 0:
+                node = i.sourceNum % TOTAL_SENSORY
+                ret.append(node)
+            # it's 1, 1 = internal
+            else:
+                node = i.sourceNum % TOTAL_INTERNAL
+                ret.append(node)
+            
+            ret.append(i.weight)
+
+            # SECOND NODE:
+            # 0 = internal
+            if i.source == 0:
+                node = i.sinkType % TOTAL_INTERNAL
+                ret.append(node)
+            # it's 1, 1 = action
+            else:
+                node = i.sinkNum % TOTAL_ACTION
+                ret.append(node)
+
+        return ret
+            
+
+
+    def CreateWiring(self):
+        self.NeuronList = self.FindNeurons()
         
+
+    def RandMutation(self):
+        pass
+        #implement later.

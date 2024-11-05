@@ -86,6 +86,7 @@ class Genome:
                 g.GenomeList.append(other.genomeList[i])
         return g
     
+    
 
 class Gene:
 
