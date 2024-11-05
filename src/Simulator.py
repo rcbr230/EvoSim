@@ -24,6 +24,7 @@ def CreateGen0():
     for i in range(1,POP_SIZE+1):
         loc = grid.FindEmptyLocation()
         peeps.initPeep(i,loc)
+        peeps.individuals[i].CreateWiring()
         grid.setIndex(loc,i)
 
 

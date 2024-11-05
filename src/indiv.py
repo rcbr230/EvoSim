@@ -87,7 +87,8 @@ class indiv:
     def feedForward(self, simStep, grid):
 
         # compute actions using genome here!
-        self.GenSensoryInputs(simStep,grid)
+        # self.GenSensoryInputs(simStep,grid)
+        pass
     
 
     def GenSensoryInputs(self, simStep, grid):
@@ -208,7 +209,7 @@ class indiv:
 
             # SECOND NODE:
             # 0 = internal
-            if i.sink == 0:
+            if i.sinkType == 0:
                 node = i.sinkNum % TOTAL_INTERNAL
                 val = NodeVal.Internal
                 ret.append((node,val))
