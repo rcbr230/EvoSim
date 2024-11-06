@@ -92,14 +92,18 @@ class indiv:
             # holds a (type, connection)
                 # type = NodeVal.Internal or NodeVal.Action
                 # connection is the index for actionOutputs
-        self.sensoryConnections = self.getSensoryNodes() # generate a connection list for all sensory nodes
-        self.InternalConnections = self.getInternalNodes()
+        self.sensoryConnections,self.sensoryWeights = self.getSensoryNodes() # generate a connection list for all sensory nodes
+        self.internalConnections, self.internalWeights = self.getInternalNodes()
+
         self.sensoryValues = []*self.TOTAL_SENSORY
-        self.actionOutputs = []*self.TOTAL_ACTION
+        self.internalOutputs = [0]*self.TOTAL_INTERNAL
+        self.actionOutputs = [0]*self.TOTAL_ACTION
         # GENERATE NEURAL NET FROM THE GENOME CREATED
 
     def getSensoryNodes(self):
-        ret = [[] for _ in range(self.TOTAL_SENSORY)]
+        connections = [[] for _ in range(self.TOTAL_SENSORY)]
+        weights = []*self.TOTAL_SENSORY
+
         for i in self.genome.GenomeList:
             if i.sourceType == 0:
                 index = i.sourceNum % self.TOTAL_SENSORY
@@ -112,12 +116,15 @@ class indiv:
                     conn = i.sinkNum % self.TOTAL_ACTION
                     type = NodeVal.Action
                 sensorConn = (type,conn)
-                ret[index].append(sensorConn)
-        return ret
+                connections[index].append(sensorConn)
+                weights[index] = i.weight
+        return connections,weights
     
 
     def getInternalNodes(self):
-        ret = [[] for _ in range(self.TOTAL_INTERNAL)]
+        connections = [[] for _ in range(self.TOTAL_INTERNAL)]
+        weights = []*self.TOTAL_INTERNAL
+
         for i in self.genome.GenomeList:
             if i.sourceType == 1:
                 index = i.sourceNum % self.TOTAL_INTERNAL
@@ -129,20 +136,41 @@ class indiv:
                 else:
                     conn = i.sinkNum % self.TOTAL_ACTION
                     type = NodeVal.Action
-                sensorConn = (type,conn)
-                ret[index].append(sensorConn)
+                internalConn = (type,conn)
+                connections[index].append(internalConn)
+                weights[index] = i.weight
         # end will hold the output
-        return ret
+        return connections,weights
     
+
+
+    # Run in this order!------------------------------------------------------------------------------------------------
     def sumInternalFromSensory(self):
-        pass
-    
-    def sumActionFromSensory(self):
-        pass
+        for i in range(len(self.sensoryConnections)):
+            for connection in self.sensoryConnections[i]:
+                if connection[0] == NodeVal.Internal:
+                    self.internalOutputs[connection[1]] += self.sensoryValues[i] * self.sensoryWeights[i]
     
     def sumInternalFromInternal(self):
-        pass
+        for i in range(len(self.internalConnections)):
+            for connection in self.internalConnections[i]:
+                if connection[0] == NodeVal.Internal:
+                    self.internalOutputs[connection[1]] += self.internalOutputs[i] * self.internalWeights[i]
+
+    def sumActionFromSensory(self):
+        for i in range(len(self.sensoryConnections)):
+            for connection in self.sensoryConnections[i]:
+                if connection[0] == NodeVal.Action:
+                    self.actionOutputs[connection[1]] += self.sensoryValues[i] * self.sensoryWeights[i]
     
+    def sumActionFromInternal(self):
+        for i in range(len(self.internalConnections)):
+            for connection in self.sensoryConnections[i]:
+                if connection[0] == NodeVal.Action:
+                    self.actionOutputs[connection[1]] += self.internalOutputs[i] * self.internalWeights[i]
+    # -------------------------------------------------------------------------------------------------------------------
+
+
     def isAlive(self):
         return self.alive
     
