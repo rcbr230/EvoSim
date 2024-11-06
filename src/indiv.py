@@ -232,14 +232,32 @@ class indiv:
     def calcInternal(self):
         visited = []
         for i in range(2,len(self.NeuronList),3):
-            
-            #dest = self.NeuronList[i][0]
             for j in range(0,len(self.NeuronList),3):
                 # Ignore prev dests
                 if self.NeuronList[i][0] in visited or self.NeuronList[i][1] != NodeVal.Internal:
                     break
+                # dests are the same
+                if self.NeuronList[j+2][0] != self.NeuronList[i][0]:
+                    continue
                 self.NeuronList[i][2] += self.NeuronList[j][2] * self.NeuronList[j+1] # Node value * weight
             visited.append(self.NeuronList[i][0])
+            self.NeuronList[i][2] = math.tanh(self.NeuronList[i][2]) 
+
+    def calcAction(self):
+        visited = []
+        for i in range(2,len(self.NeuronList),3):
+            for j in range(0,len(self.NeuronList),3):
+                # Ignore prev dests
+                if self.NeuronList[i][0] in visited or self.NeuronList[i][1] != NodeVal.Action:
+                    break
+                # Ignore if the dest is not the same as i
+                if self.NeuronList[j+2][0] != self.NeuronList[i][0]:
+                    continue
+
+                self.NeuronList[i][2] += self.NeuronList[j][2] * self.NeuronList[j+1] # Node value * weight
+            visited.append(self.NeuronList[i][0])
+            # put in range of -1,1
+            self.NeuronList[i][2] = math.tanh(self.NeuronList[i][2])
 
     def CreateWiring(self):
         self.NeuronList = self.FindNeurons()
