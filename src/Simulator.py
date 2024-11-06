@@ -9,7 +9,7 @@ import time
 
 MAX_GENERATIONS = 1
 MAX_STEPS = 100
-POP_SIZE = 1000
+POP_SIZE = 20
 GRID_X = 128
 GRID_Y = 128
 grid = Grid(GRID_X,GRID_Y)
@@ -39,12 +39,13 @@ grid.DrawGrid(canvas)
 
 while generation < MAX_GENERATIONS:
     for i in range(MAX_STEPS):
-        for index in range(1, POP_SIZE+1):
-            if peeps.getIndividual(index).isAlive():
-                simStepOneIndividual(peeps.getIndividual(index),i, index)
         grid.DrawGrid(canvas)
         root.update()
         time.sleep(0.5)
+        for index in range(1, POP_SIZE+1):
+            if peeps.getIndividual(index).isAlive():
+                simStepOneIndividual(peeps.getIndividual(index),i, index)
+       
     # CREATE NEW GEN FROM PREV GEN
 
     generation += 1

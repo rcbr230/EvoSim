@@ -44,6 +44,11 @@ sensory Inputs:
     MX = move east/west (+/-)
     MY = move north/south (+/-)
 """
+class NodeVal(Enum):
+    Sensory  = 0
+    Internal = 1
+    Action   = 2
+
 class indiv:
     
     def __init__(self, loc_:tuple, index_:int):
@@ -97,8 +102,8 @@ class indiv:
     def GenSensoryInputs(self, simStep, grid):
         SENSORY_NODES = 18
         ret = [-1]*18
-        for i in range(len(self.NeuronList)):
-            if i % 3 != 0 and self.NeuronList[i][1] != NodeVal.Sensory:
+        for i in range(2,len(self.NeuronList),3):
+            if self.NeuronList[i][1] != NodeVal.Sensory:
                 continue
             
             # check what sensory nodes
@@ -190,7 +195,7 @@ class indiv:
     def FindNeurons(self):
         TOTAL_SENSORY  = 18
         TOTAL_INTERNAL = 6
-        TOTAL_ACTION   = 9
+        TOTAL_ACTION   = 6
 
         # APPENDED SO THAT: (src,nodeVal), weight, (src,nodeVal)
         ret = []
@@ -201,14 +206,14 @@ class indiv:
                 node = i.sourceNum % TOTAL_SENSORY
                 val = NodeVal.Sensory
                 sensorVal = 0
-                input = (node,val, sensorVal)
+                input = [node,val, sensorVal]
                 ret.append(input)
             # it's 1, 1 = internal
-            else:
+            elif i.source == 1:
                 node = i.sourceNum % TOTAL_INTERNAL
                 val = NodeVal.Internal
                 internalVal = 0
-                input = (node,val, internalVal)
+                input = [node,val, internalVal]
                 ret.append(input)
             
             ret.append(i.weight)
@@ -219,14 +224,14 @@ class indiv:
                 node = i.sinkNum % TOTAL_INTERNAL
                 val = NodeVal.Internal
                 internalVal = 0
-                input = (node,val, internalVal)
+                input = [node,val, internalVal]
                 ret.append(input)
             # it's 1, 1 = action
-            else:
+            elif i.sinkType == 1:
                 node = i.sinkNum % TOTAL_ACTION
                 val = NodeVal.Action
                 actionVal = 0
-                input = (node,val, actionVal)
+                input = [node,val, actionVal]
                 ret.append(input)
         return ret
     """
@@ -263,7 +268,35 @@ class indiv:
             self.NeuronList[i][2] = math.tanh(self.NeuronList[i][2])
     
     def runActions(self,grid):
-        pass
+        for i in range(2,len(self.NeuronList),3):
+            if self.NeuronList[i][1] != NodeVal.Action:
+                continue
+            
+            # Mfd = move forward
+            if self.NeuronList[i][0] == 0:
+                self.moveForward(grid)
+            # Mrn = move random
+            if self.NeuronList[i][0] == 1:
+                self.moveRandom(grid)
+            # Mrv = move reverse
+            if self.NeuronList[i][0] == 2:
+                self.moveReverse(grid)
+            # MRL = move left/right (+/-) (relative to forward)
+            if self.NeuronList[i][0] == 3:
+                self.moveLR(grid)
+            # MX = move east/west (+/-)
+            if self.NeuronList[i][0] == 4:
+                self.moveEW(grid)
+            # MY = move north/south (+/-)
+            if self.NeuronList[i][0] == 5:
+                self.moveNS(grid)
+
+                # TBD?
+                # LPD = set long-probe distance
+                # OSC = set oscillator period
+                # Res = set responsiveness
+
+
     def CreateWiring(self):
         self.NeuronList = self.FindNeurons()
         
@@ -271,8 +304,24 @@ class indiv:
     def RandMutation(self):
         pass
         #implement later.
+    
+    def moveForward(self,grid):
+        pass
 
-class NodeVal(Enum):
-    Sensory  = 0
-    Internal = 1
-    Action   = 2
+    def moveRandom(self,grid):
+        ForwardBack = random.randint(-1,1)
+        LeftRight = random.randint(-1,1)
+        newX = min(grid.sizeX-1,self.loc[0]+ForwardBack)
+        newY = min(grid.sizeY-1,self.loc[1]+LeftRight)
+        newLoc = (newX,newY)
+        grid.updateIndex(self.loc,newLoc,self.index)
+        self.loc = newLoc
+
+    def moveReverse(self,grid):
+        pass
+    def moveLR(self,grid):
+        pass
+    def moveEW(self,grid):
+        pass
+    def moveNS(self,grid):
+        pass

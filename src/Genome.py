@@ -61,7 +61,7 @@ class Genome:
         gene.sourceNum = random.randint(0,127) # 2^7-1
         gene.sinkType = bool(random.randint(0,1))
         gene.sinkNum = random.randint(0,127) # 2^7 -1
-        gene.weight = 1/random.randint(0,65535) # 2^16 -1
+        gene.weight = 1/random.randint(1,65535) # 2^16 -1
 
         return gene
 
