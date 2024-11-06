@@ -197,13 +197,16 @@ class indiv:
             if i.source == 0:
                 node = i.sourceNum % TOTAL_SENSORY
                 val = NodeVal.Sensory
-                ret.append((node,val))
+                sensorVal = 0
+                input = (node,val, sensorVal)
+                ret.append(input)
             # it's 1, 1 = internal
             else:
                 node = i.sourceNum % TOTAL_INTERNAL
                 val = NodeVal.Internal
-                ret.append((node,val))
-                ret.append(node)
+                internalVal = 0
+                input = (node,val, internalVal)
+                ret.append(input)
             
             ret.append(i.weight)
 
@@ -212,17 +215,31 @@ class indiv:
             if i.sinkType == 0:
                 node = i.sinkNum % TOTAL_INTERNAL
                 val = NodeVal.Internal
-                ret.append((node,val))
+                internalVal = 0
+                input = (node,val, internalVal)
+                ret.append(input)
             # it's 1, 1 = action
             else:
                 node = i.sinkNum % TOTAL_ACTION
                 val = NodeVal.Action
-                ret.append((node,val))
-
+                actionVal = 0
+                input = (node,val, actionVal)
+                ret.append(input)
         return ret
+    """
+    Update val in internal node
+    """    
+    def calcInternal(self):
+        visited = []
+        for i in range(2,len(self.NeuronList),3):
             
-    def determineAction(self, startIndex):
-        pass
+            #dest = self.NeuronList[i][0]
+            for j in range(0,len(self.NeuronList),3):
+                # Ignore prev dests
+                if self.NeuronList[i][0] in visited or self.NeuronList[i][1] != NodeVal.Internal:
+                    break
+                self.NeuronList[i][2] += self.NeuronList[j][2] * self.NeuronList[j+1] # Node value * weight
+            visited.append(self.NeuronList[i][0])
 
     def CreateWiring(self):
         self.NeuronList = self.FindNeurons()
