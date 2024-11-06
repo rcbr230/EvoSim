@@ -100,172 +100,123 @@ class indiv:
     
 
     def GenSensoryInputs(self, simStep, grid):
-        SENSORY_NODES = 18
-        ret = [-1]*18
         for i in range(2,len(self.NeuronList),3):
             if self.NeuronList[i][1] != NodeVal.Sensory:
                 continue
             
             # check what sensory nodes
             #AGE
-            if self.NeuronList[i]   == 0:
-                ret[0] = simStep
+            if self.NeuronList[i][0]   == 0:
+                self.NeuronList[i][2] = simStep
             #RND
             elif self.NeuronList[i] == 1:
-                ret[1] = random.randint(0,1000)
+                self.NeuronList[i][2] = random.randint(0,1000)
             #BLR blockage left-right
-            elif self.NeuronList[i] == 2:
-                ret[2] = grid.gridInfo[self.loc[0]+1] + grid.gridInfo[self.loc[0]-1]
-                if(ret != 0):
-                    ret[2] = 1
+            elif self.NeuronList[i][0] == 2:
+                self.NeuronList[i][2] = grid.gridInfo[self.loc[0]+1] + grid.gridInfo[self.loc[0]-1]
+                if(self.NeuronList[i][2] != 0):
+                    self.NeuronList[i][2] = 1
             #OSC
-            elif self.NeuronList[i] == 3:
-                ret[3] = int(self.curOsc)
+            elif self.NeuronList[i][0] == 3:
+                self.NeuronList[i][2] = int(self.curOsc)
                 self.curOsc = not self.curOsc
             #BFD 
-            elif self.NeuronList[i] == 4:
+            elif self.NeuronList[i][0] == 4:
                 #up
                 if self.lastMoveDir == 0:
-                    ret[4] = grid.gridInfo[self.loc[1]+1]
-                    if(ret != 0):
-                        ret[4] = 1
+                    self.NeuronList[i][2] = grid.gridInfo[self.loc[1]+1]
+                    if(self.NeuronList[i][2] != 0):
+                        self.NeuronList[i][2] = 1
                 #down
                 elif self.lastMoveDir == 0:
-                    ret[4] = grid.gridInfo[self.loc[1]-1]
-                    if(ret != 0):
-                        ret[4] = 1
+                    self.NeuronList[i][2] = grid.gridInfo[self.loc[1]-1]
+                    if(self.NeuronList[i][2] != 0):
+                        self.NeuronList[i][2] = 1
                 #right
                 elif self.lastMoveDir == 0:
-                    ret[4] = grid.gridInfo[self.loc[0]+1]
-                    if(ret != 0):
-                        ret[4] = 1
+                    self.NeuronList[i][2] = grid.gridInfo[self.loc[0]+1]
+                    if(self.NeuronList[i][2] != 0):
+                        self.NeuronList[i][2] = 1
                 #left
                 elif self.lastMoveDir == 0:
-                    ret[4] = grid.gridInfo[self.loc[0]-1]
-                    if(ret != 0):
-                        ret[4] = 1
+                    self.NeuronList[i][2] = grid.gridInfo[self.loc[0]-1]
+                    if(self.NeuronList[i][2] != 0):
+                        self.NeuronList[i][2] = 1
             #Plr - pop  gradiant right
-            elif self.NeuronList[i] == 5:
+            elif self.NeuronList[i][0] == 5:
                 # implement later--------------------------------------------------------
                 pass
             #Pop - pop density
-            elif self.NeuronList[i] == 6:
+            elif self.NeuronList[i][0] == 6:
                 # implement later--------------------------------------------------------
                 pass
             #Pfd - pop gradient forward
-            elif self.NeuronList[i] == 7:
+            elif self.NeuronList[i][0] == 7:
                 # implement later--------------------------------------------------------
                 pass
             #LPf - pop long-range forward
-            elif self.NeuronList[i] == 8:
+            elif self.NeuronList[i][0] == 8:
                 # implement later--------------------------------------------------------
                 pass
             #LMy - last movement y
-            elif self.NeuronList[i] == 9:
+            elif self.NeuronList[i][0] == 9:
                 # implement later--------------------------------------------------------
                 pass
             #LBf - long-range block foward
-            elif self.NeuronList[i] == 10:
+            elif self.NeuronList[i][0] == 10:
                 # implement later--------------------------------------------------------
                 pass
             #LMx - last movement x
-            elif self.NeuronList[i] == 11:
+            elif self.NeuronList[i][0] == 11:
                 # implement later--------------------------------------------------------
                 pass
             #BDy - boarder distance y
-            elif self.NeuronList[i] == 12:
-                ret[12] = min(self.loc[1], len(grid.gridinfo[0])-self.loc[1])
+            elif self.NeuronList[i][0] == 12:
+                self.NeuronList[i][2] = min(self.loc[1], len(grid.gridinfo[0])-self.loc[1])
             #Gen - genetic similarity to forward indiv
-            elif self.NeuronList[i] == 13:
+            elif self.NeuronList[i][0] == 13:
                 # implement later--------------------------------------------------------
                 pass
             #BDx - boarder distance x
-            elif self.NeuronList[i] == 14:
-                ret[14] = min(self.loc[0], len(grid.gridinfo[0])-self.loc[0])
+            elif self.NeuronList[i][0] == 14:
+                self.NeuronList[i][2] = min(self.loc[0], len(grid.gridinfo[0])-self.loc[0])
             #Lx - x location
             elif self.NeuronList[i] == 15:
-                ret[15] = self.loc[0]
+                self.NeuronList[i][2] = self.loc[0]
             #BD - nearest boarder dist
-            elif self.NeuronList[i] == 16:
-                ret[16] = min(min(self.loc[0], len(grid.gridinfo[0])-self.loc[0]),min(self.loc[1], len(grid.gridinfo[0])-self.loc[1]))
+            elif self.NeuronList[i][0] == 16:
+                self.NeuronList[i][2] = min(min(self.loc[0], len(grid.gridinfo[0])-self.loc[0]),min(self.loc[1], len(grid.gridinfo[0])-self.loc[1]))
             #Ly -  y loc
-            elif self.NeuronList[i] == 17:
-                ret[17] = self.loc[1]
+            elif self.NeuronList[i][0] == 17:
+                self.NeuronList[i][2] = self.loc[1]
             
-    def FindNeurons(self):
+    def CreateWiring(self):
         TOTAL_SENSORY  = 18
         TOTAL_INTERNAL = 6
         TOTAL_ACTION   = 6
-
-        # APPENDED SO THAT: (src,nodeVal), weight, (src,nodeVal)
-        ret = []
+        #
+        self.sensorNeurons = [[] for _ in range(TOTAL_SENSORY)]
+        self.internalNeurons = [[] for _ in range(TOTAL_SENSORY)]
+        self.actionNeurons = [[] for _ in range(TOTAL_SENSORY)]
         for i in self.genome.GenomeList:
-            # FIRST NODE:
-            # 0 = sensory
+            # Sensory Neuron
             if i.source == 0:
-                node = i.sourceNum % TOTAL_SENSORY
-                val = NodeVal.Sensory
-                sensorVal = 0
-                input = [node,val, sensorVal]
-                ret.append(input)
-            # it's 1, 1 = internal
-            elif i.source == 1:
-                node = i.sourceNum % TOTAL_INTERNAL
-                val = NodeVal.Internal
-                internalVal = 0
-                input = [node,val, internalVal]
-                ret.append(input)
-            
-            ret.append(i.weight)
-
-            # SECOND NODE:
-            # 0 = internal
-            if i.sinkType == 0:
-                node = i.sinkNum % TOTAL_INTERNAL
-                val = NodeVal.Internal
-                internalVal = 0
-                input = [node,val, internalVal]
-                ret.append(input)
-            # it's 1, 1 = action
-            elif i.sinkType == 1:
-                node = i.sinkNum % TOTAL_ACTION
-                val = NodeVal.Action
-                actionVal = 0
-                input = [node,val, actionVal]
-                ret.append(input)
-        return ret
+                pass
+            # Internal Neuron
+            if i.source == 1 or i.sink == 0:
+                pass
+            # Action Neuron
+            if i.sink == 1:
+                pass
+        
     """
     Update val in internal node
     """    
     def calcInternal(self):
-        visited = []
-        for i in range(2,len(self.NeuronList),3):
-            for j in range(0,len(self.NeuronList),3):
-                # Ignore prev dests
-                if self.NeuronList[i][0] in visited or self.NeuronList[i][1] != NodeVal.Internal:
-                    break
-                # dests are the same
-                if self.NeuronList[j+2][0] != self.NeuronList[i][0]:
-                    continue
-                self.NeuronList[i][2] += self.NeuronList[j][2] * self.NeuronList[j+1] # Node value * weight
-            visited.append(self.NeuronList[i][0])
-            self.NeuronList[i][2] = math.tanh(self.NeuronList[i][2]) 
+        pass
 
     def calcAction(self):
-        visited = []
-        for i in range(2,len(self.NeuronList),3):
-            for j in range(0,len(self.NeuronList),3):
-                # Ignore prev dests
-                if self.NeuronList[i][0] in visited or self.NeuronList[i][1] != NodeVal.Action:
-                    break
-                # Ignore if the dest is not the same as i
-                if self.NeuronList[j+2][0] != self.NeuronList[i][0]:
-                    continue
-
-                self.NeuronList[i][2] += self.NeuronList[j][2] * self.NeuronList[j+1] # Node value * weight
-            visited.append(self.NeuronList[i][0])
-            # put in range of -1,1
-            self.NeuronList[i][2] = math.tanh(self.NeuronList[i][2])
+        pass
     
     def runActions(self,grid):
         for i in range(2,len(self.NeuronList),3):
@@ -273,22 +224,22 @@ class indiv:
                 continue
             
             # Mfd = move forward
-            if self.NeuronList[i][0] == 0:
+            if self.NeuronList[i][0] == 0 and self.NeuronList[i][2] > 0.5:
                 self.moveForward(grid)
             # Mrn = move random
-            if self.NeuronList[i][0] == 1:
+            if self.NeuronList[i][0] == 1 and self.NeuronList[i][2] > 0.5:
                 self.moveRandom(grid)
             # Mrv = move reverse
-            if self.NeuronList[i][0] == 2:
+            if self.NeuronList[i][0] == 2 and self.NeuronList[i][2] > 0.5:
                 self.moveReverse(grid)
             # MRL = move left/right (+/-) (relative to forward)
-            if self.NeuronList[i][0] == 3:
+            if self.NeuronList[i][0] == 3 and self.NeuronList[i][2] > 0.5:
                 self.moveLR(grid)
             # MX = move east/west (+/-)
-            if self.NeuronList[i][0] == 4:
+            if self.NeuronList[i][0] == 4 and self.NeuronList[i][2] > 0.5:
                 self.moveEW(grid)
             # MY = move north/south (+/-)
-            if self.NeuronList[i][0] == 5:
+            if self.NeuronList[i][0] == 5 and self.NeuronList[i][2] > 0.5:
                 self.moveNS(grid)
 
                 # TBD?
@@ -296,10 +247,6 @@ class indiv:
                 # OSC = set oscillator period
                 # Res = set responsiveness
 
-
-    def CreateWiring(self):
-        self.NeuronList = self.FindNeurons()
-        
 
     def RandMutation(self):
         pass

@@ -42,6 +42,7 @@
 # full gene 01110001110110100001111111100011
 
 import random
+import time
 # w = action effects the environment!
 
 
@@ -56,6 +57,7 @@ class Genome:
     GenomeList = []
 
     def makeRandomGene(self):
+        random.seed(time.time())
         gene = Gene()
         gene.source = bool(random.randint(0,1))
         gene.sourceNum = random.randint(0,127) # 2^7-1
@@ -68,7 +70,7 @@ class Genome:
     def makeRandomGenome(self):
         genome = Genome()
         # genomeLength = random.randint(self.MIN_GENE_LENGTH, self.MAX_GENE_LENGTH)
-        genomeLength = 5
+        genomeLength = 10
         for i in range(genomeLength):
             self.GenomeList.append(self.makeRandomGene())
 
