@@ -87,7 +87,10 @@ class indiv:
     def feedForward(self, simStep, grid):
 
         # compute actions using genome here!
-        # self.GenSensoryInputs(simStep,grid)
+        self.GenSensoryInputs(simStep,grid)
+        self.calcInternal()
+        self.calcAction()
+        self.runActions(grid)
         pass
     
 
@@ -258,7 +261,9 @@ class indiv:
             visited.append(self.NeuronList[i][0])
             # put in range of -1,1
             self.NeuronList[i][2] = math.tanh(self.NeuronList[i][2])
-
+    
+    def runActions(self,grid):
+        pass
     def CreateWiring(self):
         self.NeuronList = self.FindNeurons()
         
