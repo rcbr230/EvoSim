@@ -86,9 +86,16 @@ class indiv:
         g.makeRandomGenome()
         self.genome = g
 
+
+        # stores as:
+            # index is the sensor node. If the size > 0 then it exists
+            # holds a (type, connection)
+                # type = NodeVal.Internal or NodeVal.Action
+                # connection is the index for actionOutputs
         self.sensoryConnections = self.getSensoryNodes() # generate a connection list for all sensory nodes
         self.InternalConnections = self.getInternalNodes()
         self.sensoryValues = []*self.TOTAL_SENSORY
+        self.actionOutputs = []*self.TOTAL_ACTION
         # GENERATE NEURAL NET FROM THE GENOME CREATED
 
     def getSensoryNodes(self):
@@ -97,11 +104,15 @@ class indiv:
             if i.sourceType == 0:
                 index = i.sourceNum % self.TOTAL_SENSORY
                 conn = 0
+                type = NodeVal.Internal
                 if i.sinkType == 0:
                     conn = i.sinkNum % self.TOTAL_INTERNAL
+                    type = NodeVal.Internal
                 else:
                     conn = i.sinkNum % self.TOTAL_ACTION
-                ret[index].append(conn)
+                    type = NodeVal.Action
+                sensorConn = (type,conn)
+                ret[index].append(sensorConn)
         return ret
     
 
@@ -111,13 +122,26 @@ class indiv:
             if i.sourceType == 1:
                 index = i.sourceNum % self.TOTAL_INTERNAL
                 conn = 0
+                type = NodeVal.Internal
                 if i.sinkType == 0:
                     conn = i.sinkNum % self.TOTAL_INTERNAL
+                    type = NodeVal.Internal
                 else:
                     conn = i.sinkNum % self.TOTAL_ACTION
-                ret[index].append(conn)
+                    type = NodeVal.Action
+                sensorConn = (type,conn)
+                ret[index].append(sensorConn)
         # end will hold the output
         return ret
+    
+    def sumInternalFromSensory(self):
+        pass
+    
+    def sumActionFromSensory(self):
+        pass
+    
+    def sumInternalFromInternal(self):
+        pass
     
     def isAlive(self):
         return self.alive
