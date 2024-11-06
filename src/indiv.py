@@ -196,8 +196,8 @@ class indiv:
         TOTAL_ACTION   = 6
         #
         self.sensorNeurons = [[] for _ in range(TOTAL_SENSORY)]
-        self.internalNeurons = [[] for _ in range(TOTAL_SENSORY)]
-        self.actionNeurons = [[] for _ in range(TOTAL_SENSORY)]
+        self.internalNeurons = [[] for _ in range(TOTAL_INTERNAL)]
+        self.actionNeurons = [[] for _ in range(TOTAL_ACTION)]
         for i in self.genome.GenomeList:
             # Sensory Neuron
             if i.source == 0:
