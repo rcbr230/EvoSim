@@ -14,7 +14,7 @@ from SurvivalCond import SurvivalConditions
 
 MAX_GENERATIONS = 10
 MAX_STEPS = 2
-POP_SIZE = 1000
+POP_SIZE = 100
 GRID_X = 128
 GRID_Y = 128
 grid = Grid(GRID_X,GRID_Y)
@@ -50,22 +50,20 @@ while generation < MAX_GENERATIONS:
         for index in range(1, POP_SIZE+1):
             if peeps.getIndividual(index).isAlive():
                 simStepOneIndividual(peeps.getIndividual(index),i, index)
-        print(str(i) + " ",end=" ")
 
     # CREATE NEW GEN FROM PREV GEN
-    newGeneration = peeps.cull(grid, SurvivalConditions.LeftandRight)
+    newGen = peeps.cull(grid,SurvivalConditions.LeftandRight)
+    newGenomes = []
+    for i in range(1,POP_SIZE+1):
+        parent1 = newGen[random.randint(0,len(newGen)-1)]
+        parent2 = newGen[random.randint(0,len(newGen)-1)]
+        newGenomes.append(peeps.getIndividual(parent1).genome.breedGenomes(peeps.getIndividual(parent2).genome))
     grid.ZeroBoard()
-    prevPop = copy.deepcopy(peeps)
     peeps = Peeps(POP_SIZE)
     for i in range(1,POP_SIZE+1):
         loc = grid.FindEmptyLocation()
-        p1 = newGeneration[random.randint(0,len(newGeneration))]
-        p2 = newGeneration[random.randint(0,len(newGeneration))]
-    
-        newGenome = prevPop.getIndividual(p1).genome.breedGenomes(prevPop.getIndividual(p2).genome)
-        peeps.initPeep(i,loc,newGenome)
-        # peeps.individuals[i].CreateWiring()
+        peeps.initPeep(i,loc,newGenomes[i-1])
         grid.setIndex(loc,i)
+    print("NEW GEN STARTING")
     
     generation += 1
-root.mainloop()
