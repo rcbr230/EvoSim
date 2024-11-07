@@ -41,11 +41,11 @@ while generation < MAX_GENERATIONS:
     for i in range(MAX_STEPS):
         grid.DrawGrid(canvas)
         root.update()
-        time.sleep(0.5)
         for index in range(1, POP_SIZE+1):
             if peeps.getIndividual(index).isAlive():
                 simStepOneIndividual(peeps.getIndividual(index),i, index)
-        print("STEP")
+        print(str(i) + " ",end=" ")
+    print("Generation " + generation)
         
     # CREATE NEW GEN FROM PREV GEN
 
