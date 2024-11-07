@@ -84,7 +84,7 @@ class Genome:
             if randGenome == 0:
                 g.GenomeList.append(self.GenomeList[i])
             else:
-                g.GenomeList.append(other.genomeList[i])
+                g.GenomeList.append(other.GenomeList[i])
         return g
     
     

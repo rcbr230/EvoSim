@@ -73,7 +73,7 @@ class indiv:
     TOTAL_SENSORY  = 18
     TOTAL_INTERNAL = 6
     TOTAL_ACTION   = 7
-    def __init__(self, loc_:tuple, index_:int):
+    def __init__(self, loc_:tuple, index_:int, genome_):
         self.alive = True
         self.index = index_
         self.loc = loc_
@@ -83,7 +83,10 @@ class indiv:
         self.nnet = NeuralNet()
         self.lastMoveDir = random.randint(0,3) # 0-up, 1-right, 2-down, 3-left
         g = Genome()
-        g.makeRandomGenome()
+        if genome_ != None:
+            g = genome_
+        else:
+            g.makeRandomGenome()
         self.genome = g
         # g.printGenome()
         # stores as:
