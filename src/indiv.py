@@ -83,7 +83,7 @@ class indiv:
         self.nnet = NeuralNet()
         self.lastMoveDir = random.randint(0,3) # 0-up, 1-right, 2-down, 3-left
         g = Genome()
-        if genome_ != None:
+        if genome_ != 0:
             g = genome_
         else:
             g.makeRandomGenome()

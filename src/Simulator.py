@@ -13,8 +13,8 @@ import time
 from SurvivalCond import SurvivalConditions
 
 MAX_GENERATIONS = 10
-MAX_STEPS = 2
-POP_SIZE = 100
+MAX_STEPS = 10
+POP_SIZE = 50
 GRID_X = 128
 GRID_Y = 128
 grid = Grid(GRID_X,GRID_Y)
@@ -58,6 +58,8 @@ while generation < MAX_GENERATIONS:
         parent1 = newGen[random.randint(0,len(newGen)-1)]
         parent2 = newGen[random.randint(0,len(newGen)-1)]
         newGenomes.append(peeps.getIndividual(parent1).genome.breedGenomes(peeps.getIndividual(parent2).genome))
+        print("Breeding...")
+
     grid.ZeroBoard()
     peeps = Peeps(POP_SIZE)
     for i in range(1,POP_SIZE+1):

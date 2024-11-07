@@ -8,7 +8,7 @@ class Peeps:
         
     # def initPeep(self,index,loc):
     #     self.individuals[index] = indiv(loc,index)
-    def initPeep(self,index,loc,genome=None):
+    def initPeep(self,index,loc,genome=0):
         self.individuals[index] = indiv(loc,index,genome)
     def getIndividual(self,index):
         return self.individuals[index]
@@ -18,8 +18,7 @@ class Peeps:
         if condition == SurvivalConditions.LeftandRight:
             leftBounds = int(grid.sizeX/4)
             rightBounds = int(grid.sizeX/4*3)
-            survivingPop = [0]
-            highestIndex = 1
+            survivingPop = []
             for i in range(grid.sizeY):
                 for j in range(0,leftBounds):
                     if grid.gridInfo[i][j] != 0:
