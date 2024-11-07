@@ -58,7 +58,6 @@ while generation < MAX_GENERATIONS:
         parent1 = newGen[random.randint(0,len(newGen)-1)]
         parent2 = newGen[random.randint(0,len(newGen)-1)]
         newGenomes.append(peeps.getIndividual(parent1).genome.breedGenomes(peeps.getIndividual(parent2).genome))
-        print("Breeding...")
 
     grid.ZeroBoard()
     peeps = Peeps(POP_SIZE)
@@ -66,6 +65,6 @@ while generation < MAX_GENERATIONS:
         loc = grid.FindEmptyLocation()
         peeps.initPeep(i,loc,newGenomes[i-1])
         grid.setIndex(loc,i)
-    print("NEW GEN STARTING")
+    print("NEW GEN STARTING " + int(generation+1))
     
     generation += 1
