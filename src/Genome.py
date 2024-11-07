@@ -52,8 +52,8 @@ class Genome:
     SENSORY_NEURONS = 18
     INTERNAL_NEURONS = 3
     ACTION_NEURONS = 9  
-    MIN_GENE_LENGTH = 3
-    MAX_GENE_LENGTH = 10
+    MIN_GENE_LENGTH = 2
+    MAX_GENE_LENGTH = 5
     GenomeList = []
 
     def makeRandomGene(self):
@@ -69,13 +69,13 @@ class Genome:
     def makeRandomGenome(self):
         genome = Genome()
         # genomeLength = random.randint(self.MIN_GENE_LENGTH, self.MAX_GENE_LENGTH)
-        genomeLength = 10
+        genomeLength = 4
         for i in range(genomeLength):
             self.GenomeList.append(self.makeRandomGene())
 
     def printGenome(self):
         for i in self.GenomeList:
-            i.printHex()
+            print(i.sourceType)
 
     def breedGenomes(self, other):
         g = Genome()
