@@ -57,13 +57,12 @@ class Genome:
     GenomeList = []
 
     def makeRandomGene(self):
-        random.seed(time.time())
         gene = Gene()
-        gene.sourceType = bool(random.randint(0,1))
+        gene.sourceType = random.randint(0,1)
         gene.sourceNum = random.randint(0,127) # 2^7-1
-        gene.sinkType = bool(random.randint(0,1))
+        gene.sinkType = random.randint(0,1)
         gene.sinkNum = random.randint(0,127) # 2^7 -1
-        gene.weight = 1/random.randint(1,65535) # 2^16 -1
+        gene.weight = random.randint(1,65535) # 2^16 -1
 
         return gene
 
@@ -100,5 +99,6 @@ class Gene:
         self.weight = 0
 
     def printHex(self):
-        strFormat = format(self.sourceType, 'b') + format(self.sourceNum, '07b') +  format(self.sinkType, 'b') +  format(self.sinkNum, '07b') +  format(self.weight, '016b')
-        print(hex(int(strFormat)))
+        strFormat = format(self.sourceType, '01b') + format(self.sourceNum, '07b') +  format(self.sinkType, '01b') +  format(self.sinkNum, '07b') +  format(self.weight, '016b')
+        # print(hex(int(strFormat)))
+        print(strFormat)

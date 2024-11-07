@@ -72,21 +72,20 @@ class SensoryValues(Enum):
 class indiv:
     TOTAL_SENSORY  = 18
     TOTAL_INTERNAL = 6
-    TOTAL_ACTION   = 6
+    TOTAL_ACTION   = 7
     def __init__(self, loc_:tuple, index_:int):
-        print(SensoryValues.Age.value)
         self.alive = True
         self.index = index_
         self.loc = loc_
         self.age = 0
+        self.longProbeDist = 2
         self.curOsc = True
         self.nnet = NeuralNet()
         self.lastMoveDir = random.randint(0,3) # 0-up, 1-right, 2-down, 3-left
         g = Genome()
         g.makeRandomGenome()
         self.genome = g
-
-
+        # g.printGenome()
         # stores as:
             # index is the sensor node. If the size > 0 then it exists
             # holds a (type, connection)
@@ -95,14 +94,17 @@ class indiv:
         self.sensoryConnections,self.sensoryWeights = self.getSensoryNodes() # generate a connection list for all sensory nodes
         self.internalConnections, self.internalWeights = self.getInternalNodes()
 
-        self.sensoryValues = []*self.TOTAL_SENSORY
+        self.sensoryValues = [0]*self.TOTAL_SENSORY
         self.internalOutputs = [0]*self.TOTAL_INTERNAL
         self.actionOutputs = [0]*self.TOTAL_ACTION
         # GENERATE NEURAL NET FROM THE GENOME CREATED
 
+    def isAlive(self):
+        return self.alive
+    
     def getSensoryNodes(self):
         connections = [[] for _ in range(self.TOTAL_SENSORY)]
-        weights = []*self.TOTAL_SENSORY
+        weights = [0]*self.TOTAL_SENSORY
 
         for i in self.genome.GenomeList:
             if i.sourceType == 0:
@@ -123,7 +125,7 @@ class indiv:
 
     def getInternalNodes(self):
         connections = [[] for _ in range(self.TOTAL_INTERNAL)]
-        weights = []*self.TOTAL_INTERNAL
+        weights = [0]*self.TOTAL_INTERNAL
 
         for i in self.genome.GenomeList:
             if i.sourceType == 1:
@@ -180,11 +182,11 @@ class indiv:
         if len(self.sensoryConnections[4]) != 0:
             if self.lastMoveDir == 0:
                 front = self.loc[1]+1
-                if front > 0:
+                if front < grid.sizeY:
                     self.sensoryValues[4] = grid.gridInfo[front][self.loc[1]]
             elif self.lastMoveDir == 1:
                 front = self.loc[0]+1
-                if front > 0:
+                if front < grid.sizeX:
                     self.sensoryValues[4] = grid.gridInfo[self.loc[0]][front]
             elif self.lastMoveDir == 2:
                 front = self.loc[1]-1
@@ -287,9 +289,85 @@ class indiv:
         for i in range(len(self.actionOutputs)):
             self.actionOutputs[i] = math.tanh(self.actionOutputs[i])     
 
-    def isAlive(self):
-        return self.alive
+    # MY = move north/south (+/-)
+    def RunActions(self,grid):
+        MAX_PROBE_DIST = 5
+        # LPD = set long-probe distance
+        if self.actionOutputs[0] > 0.5:
+            self.longProbeDist = self.actionOutputs[0] * MAX_PROBE_DIST
+        
+        if self.actionOutputs[1] > 0.5:    
+            if self.lastMoveDir == 0:
+                if self.loc[1] < grid.sizeY-1:
+                    if grid.gridInfo[self.loc[0]][self.loc[1]+1] == 0:
+                        newLoc = (self.loc[0],self.loc[1]+1)
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.loc = newLoc
+            elif self.lastMoveDir == 1:
+                if self.loc[0] < grid.sizeX-1:
+                    if grid.gridInfo[self.loc[0]+1][self.loc[1]] == 0:
+                        newLoc = (self.loc[0]+1,self.loc[1])
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.loc = newLoc
+            elif self.lastMoveDir == 2:
+                if self.loc[1] > 0:
+                    if grid.gridInfo[self.loc[0]][self.loc[1]-1] == 0:
+                        newLoc = (self.loc[0],self.loc[1]-1)
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.loc = newLoc
+            elif self.lastMoveDir == 3:
+                if self.loc[0] > 0:
+                    if grid.gridInfo[self.loc[0]-1][self.loc[1]] == 0:
+                        newLoc = (self.loc[0]-1,self.loc[1])
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.loc = newLoc
+                  
+        # Mrn = move random
+        if self.actionOutputs[2] > 0.5:
+            rX = random.randint(-1,1)
+            rY = random.randint(-1,1)
+            randX = self.loc[0]+rX
+            randY = self.loc[1]+rY
+            if randX < 0:
+                randX = 0
+            if randY < 0:
+                randY = 0
+            if randX >= grid.sizeX:
+                randX = grid.sizeX-1
+            if randY >= grid.sizeY:
+                randY = grid.sizeY-1
+            newLoc = (randX,randY)
+            grid.updateIndex(self.loc,newLoc,self.index)
+            self.loc = newLoc
+                                                # Mrv = move reverse
+        if self.actionOutputs[3] > 0.5:
+            pass
+                                                
+                                                # MRL = move left/right (+/-)
+        if self.actionOutputs[4] > 0.5:
+            pass
     
+        # MX = move east/west (+/-)
+        if self.actionOutputs[5] > 0.5:
+            if self.actionOutputs[5] < 0.75:# east
+                newX = self.loc[0]-1
+                if newX < 0:
+                    newX = 0
+                newLoc = (newX,self.loc[1])
+                grid.updateIndex(self.loc,newLoc,self.index)
+                self.loc = newLoc
+            else:                           # west
+                newX = self.loc[0]+1
+                if newX >= grid.sizeX:
+                    newX = grid.sizeX-1
+                newLoc = (newX,self.loc[1])
+                grid.updateIndex(self.loc,newLoc,self.index)
+                self.loc = newLoc
+        
+                                                # Mfd = move forward
+        if self.actionOutputs[6] > 0.5:
+            pass
+        
     # use nnet to generate actions, and perform them
     def feedForward(self, simStep, grid):
         self.genSensoryData(grid,simStep)
@@ -303,6 +381,6 @@ class indiv:
 
         self.ActionTanH()
 
-        self.runActions()
+        self.RunActions(grid)
 
     

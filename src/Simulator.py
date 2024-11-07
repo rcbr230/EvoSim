@@ -9,7 +9,7 @@ import time
 
 MAX_GENERATIONS = 1
 MAX_STEPS = 100
-POP_SIZE = 20
+POP_SIZE = 1000
 GRID_X = 128
 GRID_Y = 128
 grid = Grid(GRID_X,GRID_Y)
@@ -45,7 +45,8 @@ while generation < MAX_GENERATIONS:
         for index in range(1, POP_SIZE+1):
             if peeps.getIndividual(index).isAlive():
                 simStepOneIndividual(peeps.getIndividual(index),i, index)
-       
+        print("STEP")
+        
     # CREATE NEW GEN FROM PREV GEN
 
     generation += 1
