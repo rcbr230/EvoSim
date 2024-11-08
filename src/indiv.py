@@ -1,6 +1,7 @@
 
 import math
 import random
+import time
 from Genome import Genome
 from NeuralNet import NeuralNet
 from enum import Enum
@@ -473,5 +474,4 @@ class indiv:
         self.ActionTanH()
 
         self.RunActions(grid)
-
     
