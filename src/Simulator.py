@@ -54,7 +54,7 @@ while generation < MAX_GENERATIONS:
 
     # CREATE NEW GEN FROM PREV GEN
 
-    newGen = peeps.cull(grid,SurvivalConditions.Center)
+    newGen = peeps.cull(grid,SurvivalConditions.LeftandRight)
     print("SURVIVED: " + str(len(newGen)))
     newGenomes = []
     for i in range(0,POP_SIZE):

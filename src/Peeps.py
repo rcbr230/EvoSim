@@ -17,7 +17,7 @@ class Peeps:
     # return an array of peep indexes that pass some condition
     def cull(self, grid, condition):
         survivingPop = []
-        dist = 5
+        dist = 8
         leftBounds = int(grid.sizeX/dist)
         rightBounds = int(grid.sizeX/dist*(dist-1))
         topBounds = int(grid.sizeY/dist)
@@ -59,11 +59,11 @@ class Peeps:
         if condition == SurvivalConditions.TopandBottom:
             for i in range(0, topBounds):
                 for j in range(grid.sizeX):
-                    if grid.gridInfo[i][j] != 0:
-                        survivingPop.append(grid.gridInfo[i][j])
+                    if grid.gridInfo[j][i] != 0:
+                        survivingPop.append(grid.gridInfo[j][i])
             for i in range(bottomBounds, grid.sizeX):
                 for j in range(grid.sizeY):
-                    if grid.gridInfo[i][j] != 0:
-                        survivingPop.append(grid.gridInfo[i][j])
+                    if grid.gridInfo[j][i] != 0:
+                        survivingPop.append(grid.gridInfo[j][i])
         
         return survivingPop           
