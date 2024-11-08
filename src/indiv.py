@@ -275,28 +275,28 @@ class indiv:
                         newLoc = (self.loc[0],self.loc[1]+1)
                         if not grid.isOccupied(newLoc[0],newLoc[1]):
                             grid.updateIndex(self.loc,newLoc,self.index)
-                        self.loc = newLoc
+                            self.loc = newLoc
             elif self.lastMoveDir == 1:
                 if self.loc[0] < grid.sizeX-1:
                     if grid.gridInfo[self.loc[0]+1][self.loc[1]] == 0:
                         newLoc = (self.loc[0]+1,self.loc[1])
                         if not grid.isOccupied(newLoc[0],newLoc[1]):
                             grid.updateIndex(self.loc,newLoc,self.index)
-                        self.loc = newLoc
+                            self.loc = newLoc
             elif self.lastMoveDir == 2:
                 if self.loc[1] > 0:
                     if grid.gridInfo[self.loc[0]][self.loc[1]-1] == 0:
                         newLoc = (self.loc[0],self.loc[1]-1)
                         if not grid.isOccupied(newLoc[0],newLoc[1]):
                             grid.updateIndex(self.loc,newLoc,self.index)
-                        self.loc = newLoc
+                            self.loc = newLoc
             elif self.lastMoveDir == 3:
                 if self.loc[0] > 0:
                     if grid.gridInfo[self.loc[0]-1][self.loc[1]] == 0:
                         newLoc = (self.loc[0]-1,self.loc[1])
                         if not grid.isOccupied(newLoc[0],newLoc[1]):
                             grid.updateIndex(self.loc,newLoc,self.index)
-                        self.loc = newLoc
+                            self.loc = newLoc
                   
         # Mrn = move random
         if self.actionOutputs[2] > self.PERFORM_ACTION:
@@ -314,86 +314,86 @@ class indiv:
                 randY = grid.sizeY-1
             newLoc = (randX,randY)
             if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-            self.loc = newLoc
+                grid.updateIndex(self.loc,newLoc,self.index)
+                self.loc = newLoc
         # Mrv = move reverse
         if self.actionOutputs[3] > self.PERFORM_ACTION:
             if self.lastMoveDir == 0:
                 newLoc = (self.loc[0],max(0,self.loc[1]-1))
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.lastMoveDir = 2
-                self.loc = newLoc
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 2
+                    self.loc = newLoc
             elif self.lastMoveDir == 1:
                 newLoc = (max(0,self.loc[0]-1),self.loc[1])
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.lastMoveDir = 3
-                self.loc = newLoc
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 3
+                    self.loc = newLoc
             elif self.lastMoveDir == 2:
                 newLoc = (self.loc[0],min(grid.sizeY-1,self.loc[1]+1))
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.lastMoveDir = 0
-                self.loc = newLoc
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 0
+                    self.loc = newLoc
             else:
                 newLoc = (min(grid.sizeX-1,self.loc[0]+1),self.loc[1])
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.lastMoveDir = 1
-                self.loc = newLoc                              
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 1
+                    self.loc = newLoc                              
         # MRL = move left/right (+/-)
         if self.actionOutputs[4] > self.PERFORM_ACTION:
             if self.PERFORM_ACTION < (1-self.PERFORM_ACTION)/2: # left
                 if self.lastMoveDir == 0: 
                     newLoc = (max(0,self.loc[0]-1),self.loc[1])
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                    self.lastMoveDir = 3
-                    self.loc = newLoc
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.lastMoveDir = 3
+                        self.loc = newLoc
                 elif self.lastMoveDir == 1:
                     newLoc = (self.loc[0],min(self.loc[1]+1,grid.sizeY-1))
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                    self.lastMoveDir = 0
-                    self.loc = newLoc
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.lastMoveDir = 0
+                        self.loc = newLoc
                 elif self.lastMoveDir == 2:
                     newLoc = (min(grid.sizeX-1,self.loc[0]+1),self.loc[1])
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                    self.lastMoveDir = 1
-                    self.loc = newLoc
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.lastMoveDir = 1
+                        self.loc = newLoc
                 else:
                     newLoc = (self.loc[0],max(self.loc[1]-1,0))
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                    self.lastMoveDir = 2
-                    self.loc = newLoc
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.lastMoveDir = 2
+                        self.loc = newLoc
             else:                                           # right
                 if self.lastMoveDir == 0: 
                     newLoc = (min(grid.sizeX-1,self.loc[0]+1),self.loc[1])
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                    self.lastMoveDir = 1
-                    self.loc = newLoc
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.lastMoveDir = 1
+                        self.loc = newLoc
                 elif self.lastMoveDir == 1:
                     newLoc = (self.loc[0],max(self.loc[1]-1,0))
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                    self.lastMoveDir = 2
-                    self.loc = newLoc
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.lastMoveDir = 2
+                        self.loc = newLoc
                 elif self.lastMoveDir == 2:
                     newLoc = (min(0,self.loc[0]-1),self.loc[1])
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                    self.lastMoveDir = 3
-                    self.loc = newLoc
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.lastMoveDir = 3
+                        self.loc = newLoc
                 else:
                     newLoc = (self.loc[0],min(self.loc[1]+1,grid.sizeY))
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                    self.lastMoveDir = 0
-                    self.loc = newLoc
+                        grid.updateIndex(self.loc,newLoc,self.index)
+                        self.lastMoveDir = 0
+                        self.loc = newLoc
     
         # MX = move east/west (+/-)
         if self.actionOutputs[5] > self.PERFORM_ACTION:
@@ -403,18 +403,18 @@ class indiv:
                     newX = 0
                 newLoc = (newX,self.loc[1])
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.loc = newLoc
-                self.lastMoveDir = 1
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.loc = newLoc
+                    self.lastMoveDir = 1
             else:                           # west
                 newX = self.loc[0]+1
                 if newX >= grid.sizeX:
                     newX = grid.sizeX-1
                 newLoc = (newX,self.loc[1])
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.loc = newLoc
-                self.lastMoveDir = 3
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.loc = newLoc
+                    self.lastMoveDir = 3
 
         
         # Mfd = move forward
@@ -422,23 +422,23 @@ class indiv:
             if self.lastMoveDir == 0:
                 newLoc = (self.loc[0],min(self.loc[1]+1,grid.sizeY-1))
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.loc = newLoc
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.loc = newLoc
             elif self.lastMoveDir == 1:
                 newLoc = (min(self.loc[0]+1, grid.sizeX-1),self.loc[1])
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.loc = newLoc
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.loc = newLoc
             elif self.lastMoveDir == 2:
                 newLoc = (self.loc[0],max(self.loc[1]-1,0))
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.loc = newLoc
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.loc = newLoc
             else:
                 newLoc = (max(self.loc[0]-1, 0),self.loc[1])
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
-                            grid.updateIndex(self.loc,newLoc,self.index)
-                self.loc = newLoc
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.loc = newLoc
 
         
     # use nnet to generate actions, and perform them

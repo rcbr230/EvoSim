@@ -64,4 +64,5 @@ class Peeps:
                 for j in range(grid.sizeY):
                     if grid.gridInfo[i][j] != 0:
                         survivingPop.append(grid.gridInfo[i][j])
+        
         return survivingPop           
