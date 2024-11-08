@@ -87,6 +87,18 @@ class Genome:
                 g.GenomeList.append(other.GenomeList[i])
         return g
     
+    # Returns a string representing the RGB code of a color representing this genome
+    # Currently: source num avg determines how red the color is
+    #            sink num avg determines how blue the color is
+    def getColor(self):
+        sourceNumSum = 0
+        sinkNumSum = 0
+        for gene in self.genomeList:
+            sourceNumSum += gene.sourceNum
+            sinkNumSum += gene.sinkNum
+        sourceNumAvg = sourceNumSum / len(self.genomeList)
+        sinkNumAvg = sinkNumSum / len(self.GenomeList)
+        return "#" + str(hex(round(sourceNumAvg*255))) + "0" + str(hex(round(sinkNumAvg*255)))
     
 
 class Gene:

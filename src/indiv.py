@@ -105,6 +105,9 @@ class indiv:
     def isAlive(self):
         return self.alive
     
+    def getGenome(self):
+        return self.genome
+
     def getSensoryNodes(self):
         connections = [[] for _ in range(self.TOTAL_SENSORY)]
         weights = [0]*self.TOTAL_SENSORY
