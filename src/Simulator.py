@@ -13,12 +13,12 @@ import time
 from SurvivalCond import SurvivalConditions
 
 MAX_GENERATIONS = 10
-MAX_STEPS = 10
+MAX_STEPS = 1000
 POP_SIZE = 10
 GRID_X = 128
 GRID_Y = 128
-grid = Grid(GRID_X,GRID_Y)
 peeps = Peeps(POP_SIZE)
+grid = Grid(GRID_X,GRID_Y, peeps)
 generation = 0
 
 
