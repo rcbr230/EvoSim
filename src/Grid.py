@@ -54,16 +54,7 @@ class Grid:
             for j in range(len(self.gridInfo)):
                 if self.gridInfo[i][j] != 0:
                     canvas.create_oval(i*5,j*5,i*5+5,j*5+5,fill=clrs[self.gridInfo[i][j] % 5])
-                    #new stuff
-    # ADD IN "SURVIVAL CONDITIONS"
-    # Cull peeps in a certain area
-        # Rect
-        # Oval
-        # Corners
-        # N/S sides
-        # E/W sides
 
-        # PLEASE PROVIDE CONSTRAINTS TO THESE FUNCTIONS
 
     
 

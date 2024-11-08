@@ -50,25 +50,6 @@ class NodeVal(Enum):
     Internal = 1
     Action   = 2
 
-class SensoryValues(Enum):
-    Age = 0
-    Rnd = 1
-    Blr = 2
-    Osc = 3
-    Bfd = 4
-    Plr = 5
-    Pop = 6
-    Pfd = 7
-    LPf = 8
-    LMy = 9
-    LBf = 10
-    LMx = 11
-    BDy = 12
-    Gen = 13
-    BDx = 14
-    Lx =  15
-    BD =  16
-    Ly =  17
 
 class indiv:
     TOTAL_SENSORY  = 13
@@ -286,7 +267,7 @@ class indiv:
         # LPD = set long-probe distance      change later maybe
         if self.actionOutputs[0] > self.PERFORM_ACTION:
             self.longProbeDist = self.actionOutputs[0] * self.MAX_PROBE_DIST
-        
+        # MvF = move forward
         if self.actionOutputs[1] > self.PERFORM_ACTION:    
             if self.lastMoveDir == 0:
                 if self.loc[1] < grid.sizeY-1:

@@ -47,15 +47,14 @@ while generation < MAX_GENERATIONS:
     for i in range(MAX_STEPS):
         canvas.delete("all")
         grid.DrawGrid(canvas)
-        t1 = time.time()
         root.update()
-        print(time.time()-t1)
         for index in range(1, POP_SIZE+1):
             if peeps.getIndividual(index).isAlive():
                 simStepOneIndividual(peeps.getIndividual(index),i, index)
 
     # CREATE NEW GEN FROM PREV GEN
-    newGen = peeps.cull(grid,SurvivalConditions.LeftandRight)
+    newGen = peeps.cull(grid,SurvivalConditions.Bottom)
+    print("SURVIVED: " + str(len(newGen)))
     newGenomes = []
     for i in range(0,POP_SIZE):
         parent1 = newGen[random.randint(0,len(newGen)-1)]
