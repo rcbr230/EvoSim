@@ -17,7 +17,7 @@ class Peeps:
     # return an array of peep indexes that pass some condition
     def cull(self, grid, condition):
         survivingPop = []
-        dist = 8
+        dist = 5
         leftBounds = int(grid.sizeX/dist)
         rightBounds = int(grid.sizeX/dist*(dist-1))
         topBounds = int(grid.sizeY/dist)
@@ -25,37 +25,37 @@ class Peeps:
         if condition == SurvivalConditions.LeftandRight:
             for i in range(grid.sizeY):
                 for j in range(0,leftBounds):
-                    if grid.gridInfo[i][j] != 0:
-                        survivingPop.append(grid.gridInfo[i][j])
+                    if grid.gridInfo[j][i] != 0:
+                        survivingPop.append(grid.gridInfo[j][i])
             for i in range(grid.sizeY):
                 for j in range(rightBounds,grid.sizeX):
-                    if grid.gridInfo[i][j] != 0:
-                        survivingPop.append(grid.gridInfo[i][j])
+                    if grid.gridInfo[j][i] != 0:
+                        survivingPop.append(grid.gridInfo[j][i])
         if condition == SurvivalConditions.Left:
             for i in range(grid.sizeY):
                 for j in range(0,leftBounds):
-                    if grid.gridInfo[i][j] != 0:
-                        survivingPop.append(grid.gridInfo[i][j])
+                    if grid.gridInfo[j][i] != 0:
+                        survivingPop.append(grid.gridInfo[j][i])
         if condition == SurvivalConditions.Right:
             for i in range(grid.sizeY):
                 for j in range(rightBounds,grid.sizeX):
-                    if grid.gridInfo[i][j] != 0:
-                        survivingPop.append(grid.gridInfo[i][j])
+                    if grid.gridInfo[j][i] != 0:
+                        survivingPop.append(grid.gridInfo[j][i])
         if condition == SurvivalConditions.Center:
             for i in range(topBounds, bottomBounds):
                 for j in range(leftBounds, rightBounds):
-                    if grid.gridInfo[i][j] != 0:
-                        survivingPop.append(grid.gridInfo[i][j])
+                    if grid.gridInfo[j][i] != 0:
+                        survivingPop.append(grid.gridInfo[j][i])
         if condition == SurvivalConditions.Top:
             for i in range(0, topBounds):
                 for j in range(grid.sizeX):
-                    if grid.gridInfo[i][j] != 0:
-                        survivingPop.append(grid.gridInfo[i][j])
+                    if grid.gridInfo[j][i] != 0:
+                        survivingPop.append(grid.gridInfo[j][i])
         if condition == SurvivalConditions.Bottom:
-            for i in range(bottomBounds, grid.sizeX):
-                for j in range(grid.sizeY):
-                    if grid.gridInfo[i][j] != 0:
-                        survivingPop.append(grid.gridInfo[i][j])
+            for i in range(bottomBounds, grid.sizeY):
+                for j in range(grid.sizeX):
+                    if grid.gridInfo[j][i] != 0:
+                        survivingPop.append(grid.gridInfo[j][i])
         if condition == SurvivalConditions.TopandBottom:
             for i in range(0, topBounds):
                 for j in range(grid.sizeX):

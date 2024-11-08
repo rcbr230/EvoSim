@@ -54,7 +54,7 @@ class NodeVal(Enum):
 class indiv:
     TOTAL_SENSORY  = 13
     TOTAL_INTERNAL = 6
-    TOTAL_ACTION   = 7
+    TOTAL_ACTION   = 8
     MAX_PROBE_DIST = 5
     PERFORM_ACTION = 0.3
     def __init__(self, loc_:tuple, index_:int, genome_):
@@ -262,7 +262,6 @@ class indiv:
         for i in range(len(self.actionOutputs)):
             self.actionOutputs[i] = math.tanh(self.actionOutputs[i])     
 
-    # MY = move north/south (+/-)
     def RunActions(self,grid):
         # LPD = set long-probe distance      change later maybe
         if self.actionOutputs[0] > self.PERFORM_ACTION:
@@ -439,7 +438,26 @@ class indiv:
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
                     grid.updateIndex(self.loc,newLoc,self.index)
                     self.loc = newLoc
-
+        # MY = move north/south (+/-)
+        if self.actionOutputs[7] > self.PERFORM_ACTION:
+            if self.actionOutputs[5] < (1-self.PERFORM_ACTION)/2: # south
+                newY = self.loc[1]-1
+                if newY < 0:
+                    newY = 0
+                newLoc = (self.loc[0],newY)
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.loc = newLoc
+                    self.lastMoveDir = 1
+            else:                           # north
+                newY = self.loc[1]+1
+                if newY >= grid.sizeY:
+                    newY = grid.sizeY-1
+                newLoc = (self.loc[0],newY)
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                    grid.updateIndex(self.loc,newLoc,self.index)
+                    self.loc = newLoc
+                    self.lastMoveDir = 3
         
     # use nnet to generate actions, and perform them
     def feedForward(self, simStep, grid):

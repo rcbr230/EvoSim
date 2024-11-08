@@ -53,7 +53,8 @@ while generation < MAX_GENERATIONS:
                 simStepOneIndividual(peeps.getIndividual(index),i, index)
 
     # CREATE NEW GEN FROM PREV GEN
-    newGen = peeps.cull(grid,SurvivalConditions.Bottom)
+
+    newGen = peeps.cull(grid,SurvivalConditions.Center)
     print("SURVIVED: " + str(len(newGen)))
     newGenomes = []
     for i in range(0,POP_SIZE):
