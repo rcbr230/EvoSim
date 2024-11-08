@@ -12,9 +12,9 @@ import time
 
 from SurvivalCond import SurvivalConditions
 
-MAX_GENERATIONS = 30
-MAX_STEPS = 30
-POP_SIZE = 500
+MAX_GENERATIONS = 100
+MAX_STEPS = 128
+POP_SIZE = 1000
 GRID_X = 128
 GRID_Y = 128
 peeps = Peeps(POP_SIZE)
