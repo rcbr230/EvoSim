@@ -55,9 +55,9 @@ while generation < MAX_GENERATIONS:
     newGen = peeps.cull(grid,SurvivalConditions.LeftandRight)
     newGenomes = []
     for i in range(0,POP_SIZE):
-        t1 = time.time()
         parent1 = newGen[random.randint(0,len(newGen)-1)]
         parent2 = newGen[random.randint(0,len(newGen)-1)]
+        t1 = time.time()
         newGenomes.append(peeps.getIndividual(parent1).genome.breedGenomes(peeps.getIndividual(parent2).genome))
         print(str(time.time() - t1))
     print("done1")
@@ -71,4 +71,5 @@ while generation < MAX_GENERATIONS:
 
         grid.setIndex(loc,i)
     print("NEW GEN STARTING " + str(generation+1))
+    exit(0)
     generation += 1
