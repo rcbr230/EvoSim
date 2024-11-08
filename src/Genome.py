@@ -69,13 +69,14 @@ class Genome:
     def makeRandomGenome(self):
         genome = Genome()
         # genomeLength = random.randint(self.MIN_GENE_LENGTH, self.MAX_GENE_LENGTH)
-        genomeLength = 4
+        genomeLength = 10
         for i in range(genomeLength):
             self.GenomeList.append(self.makeRandomGene())
 
     def printGenome(self):
         for i in self.GenomeList:
-            print(i.sourceType)
+            print(str(i.sourceType),end=" ")
+        print()
 
     def breedGenomes(self, other):
         g = Genome()
@@ -86,21 +87,8 @@ class Genome:
             else:
                 g.GenomeList.append(other.GenomeList[i])
         return g
-    
-    # Returns a string representing the RGB code of a color representing this genome
-    # Currently: source num avg determines how red the color is
-    #            sink num avg determines how blue the color is
-    def getColor(self):
-        sourceTypeSum = 0
-        sinkTypeSum = 0
-        for gene in self.GenomeList:
-            sourceTypeSum += gene.sourceType
-            sinkTypeSum += gene.sinkType
-        sourceTypeAvg = sourceTypeSum / len(self.GenomeList)
-        sinkTypeAvg = sinkTypeSum / len(self.GenomeList)
-        red = str(hex(round(sourceTypeAvg*255)))
-        blue = str(hex(round(sinkTypeAvg*255)))
-        return "#" + red[2:] + "00" + blue[2:]
+    def __init__(self):
+        self.GenomeList = []
     
 
 class Gene:

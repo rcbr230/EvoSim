@@ -12,9 +12,9 @@ import time
 
 from SurvivalCond import SurvivalConditions
 
-MAX_GENERATIONS = 10
-MAX_STEPS = 1000
-POP_SIZE = 10
+MAX_GENERATIONS = 30
+MAX_STEPS = 30
+POP_SIZE = 500
 GRID_X = 128
 GRID_Y = 128
 peeps = Peeps(POP_SIZE)
@@ -44,6 +44,7 @@ grid.DrawGrid(canvas)
 
 
 while generation < MAX_GENERATIONS:
+    startTime = time.time()
     for i in range(MAX_STEPS):
         grid.DrawGrid(canvas)
         root.after(1,root.update())
@@ -57,19 +58,15 @@ while generation < MAX_GENERATIONS:
     for i in range(0,POP_SIZE):
         parent1 = newGen[random.randint(0,len(newGen)-1)]
         parent2 = newGen[random.randint(0,len(newGen)-1)]
-        t1 = time.time()
         newGenomes.append(peeps.getIndividual(parent1).genome.breedGenomes(peeps.getIndividual(parent2).genome))
-        print(str(time.time() - t1))
-    print("done1")
     grid.ZeroBoard()
     peeps = Peeps(POP_SIZE)
     for i in range(1,POP_SIZE+1):
-        t1 = time.time()
         loc = grid.FindEmptyLocation()
         peeps.initPeep(i,loc,newGenomes[i-1])
-        print(str(time.time() - t1))
 
         grid.setIndex(loc,i)
     print("NEW GEN STARTING " + str(generation+1))
-    exit(0)
+    print(time.time()- startTime)
     generation += 1
+root.mainloop()
