@@ -48,12 +48,13 @@ class Grid:
         self.gridInfo = [[0 for i in range(self.sizeX)] for i in range(self.sizeY)]
         
     def DrawGrid(self,canvas):
+        clrs = ["black","blue","red","yellow","green"]
         canvas.create_rectangle(0,0,1000,1000,fill="white")
         for i in range(len(self.gridInfo)):
             for j in range(len(self.gridInfo)):
                 if self.gridInfo[i][j] != 0:
-                    color = self.peeps.getIndividual(self.gridInfo[i][j]).getGenome().getColor()
-                    canvas.create_oval(i*5,j*5,i*5+5,j*5+5,fill=self.peeps.getIndividual(self.gridInfo[i][j]).getGenome().getColor())
+                    canvas.create_oval(i*5,j*5,i*5+5,j*5+5,fill=clrs[self.gridInfo[i][j] % 5])
+                    #new stuff
     # ADD IN "SURVIVAL CONDITIONS"
     # Cull peeps in a certain area
         # Rect
