@@ -70,9 +70,11 @@ class SensoryValues(Enum):
     Ly =  17
 
 class indiv:
-    TOTAL_SENSORY  = 18
+    TOTAL_SENSORY  = 13
     TOTAL_INTERNAL = 6
     TOTAL_ACTION   = 7
+    MAX_PROBE_DIST = 5
+    PERFORM_ACTION = 0.3
     def __init__(self, loc_:tuple, index_:int, genome_):
         self.alive = True
         self.index = index_
@@ -88,7 +90,6 @@ class indiv:
         else:
             g.makeRandomGenome()
         self.genome = g
-        # g.printGenome()
         # stores as:
             # index is the sensor node. If the size > 0 then it exists
             # holds a (type, connection)
@@ -202,60 +203,44 @@ class indiv:
             if self.sensoryValues[4] > 0:
                 self.sensoryValues[4] = 1
 
-                                                                # Plr = population gradient left-right
-        if len(self.sensoryConnections[5]) != 0:
-            pass
-                                                                # Pop = population density
-        if len(self.sensoryConnections[6]) != 0:
-            pass
-                                                                # Pfd = population gradient forward
-        if len(self.sensoryConnections[7]) != 0:
-            pass
-                                                                # LPf = population long-range forward
-        if len(self.sensoryConnections[8]) != 0:
-            pass
         # LMy = last movement Y
-        if len(self.sensoryConnections[9]) != 0:
+        if len(self.sensoryConnections[5]) != 0:
             if self.lastMoveDir == 0 or self.lastMoveDir == 2:
-                self.sensoryValues[9] = 0
+                self.sensoryValues[5] = 0
             else:
-                self.sensoryValues[9] += 1
+                self.sensoryValues[5] += 1
 
                                                                 # LBf = blockage long-range forward
-        if len(self.sensoryConnections[10]) != 0:
+        if len(self.sensoryConnections[6]) != 0:
             pass
         # LMx = last movement X
-        if len(self.sensoryConnections[11]) != 0:
+        if len(self.sensoryConnections[7]) != 0:
             if self.lastMoveDir == 1 or self.lastMoveDir == 3:
-                self.sensoryValues[11] = 0
+                self.sensoryValues[7] = 0
             else:
-                self.sensoryValues[11] += 1
+                self.sensoryValues[7] += 1
 
         # BDy = north/south border distance
-        if len(self.sensoryConnections[12]) != 0:
-            self.sensoryValues[12] = min(self.loc[1], grid.sizeY-self.loc[1])
+        if len(self.sensoryConnections[8]) != 0:
+            self.sensoryValues[8] = min(self.loc[1], grid.sizeY-self.loc[1])
 
-                                                                # Gen = genetic similarity of forward neighbor 
-        if len(self.sensoryConnections[13]) != 0:
-            pass
-        
         # BDx = east/west border distance
-        if len(self.sensoryConnections[14]) != 0:
-            self.sensoryValues[14] = min(self.loc[0], grid.sizeX-self.loc[0])
+        if len(self.sensoryConnections[9]) != 0:
+            self.sensoryValues[9] = min(self.loc[0], grid.sizeX-self.loc[0])
         
         # Lx = east/west world location
-        if len(self.sensoryConnections[15]) != 0:
-            self.sensoryValues[15] = self.loc[0]
+        if len(self.sensoryConnections[10]) != 0:
+            self.sensoryValues[10] = self.loc[0]
 
         # BD = nearest border distance
-        if len(self.sensoryConnections[16]) != 0:
+        if len(self.sensoryConnections[11]) != 0:
             xDist = min(self.loc[0], grid.sizeX-self.loc[0])
             yDist = min(self.loc[1], grid.sizeY-self.loc[1])
-            self.sensoryValues[16] = min(xDist,yDist)
+            self.sensoryValues[11] = min(xDist,yDist)
             
         # Ly = north/south world location
-        if len(self.sensoryConnections[17]) != 0:
-            self.sensoryValues[17] = self.loc[1]
+        if len(self.sensoryConnections[12]) != 0:
+            self.sensoryValues[12] = self.loc[1]
         
 
     # Run in this order!------------------------------------------------------------------------------------------------
@@ -294,39 +279,42 @@ class indiv:
 
     # MY = move north/south (+/-)
     def RunActions(self,grid):
-        MAX_PROBE_DIST = 5
-        # LPD = set long-probe distance
-        if self.actionOutputs[0] > 0.5:
-            self.longProbeDist = self.actionOutputs[0] * MAX_PROBE_DIST
+        # LPD = set long-probe distance      change later maybe
+        if self.actionOutputs[0] > self.PERFORM_ACTION:
+            self.longProbeDist = self.actionOutputs[0] * self.MAX_PROBE_DIST
         
-        if self.actionOutputs[1] > 0.5:    
+        if self.actionOutputs[1] > self.PERFORM_ACTION:    
             if self.lastMoveDir == 0:
                 if self.loc[1] < grid.sizeY-1:
                     if grid.gridInfo[self.loc[0]][self.loc[1]+1] == 0:
                         newLoc = (self.loc[0],self.loc[1]+1)
-                        grid.updateIndex(self.loc,newLoc,self.index)
+                        if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
                         self.loc = newLoc
             elif self.lastMoveDir == 1:
                 if self.loc[0] < grid.sizeX-1:
                     if grid.gridInfo[self.loc[0]+1][self.loc[1]] == 0:
                         newLoc = (self.loc[0]+1,self.loc[1])
-                        grid.updateIndex(self.loc,newLoc,self.index)
+                        if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
                         self.loc = newLoc
             elif self.lastMoveDir == 2:
                 if self.loc[1] > 0:
                     if grid.gridInfo[self.loc[0]][self.loc[1]-1] == 0:
                         newLoc = (self.loc[0],self.loc[1]-1)
-                        grid.updateIndex(self.loc,newLoc,self.index)
+                        if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
                         self.loc = newLoc
             elif self.lastMoveDir == 3:
                 if self.loc[0] > 0:
                     if grid.gridInfo[self.loc[0]-1][self.loc[1]] == 0:
                         newLoc = (self.loc[0]-1,self.loc[1])
-                        grid.updateIndex(self.loc,newLoc,self.index)
+                        if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
                         self.loc = newLoc
                   
         # Mrn = move random
-        if self.actionOutputs[2] > 0.5:
+        if self.actionOutputs[2] > self.PERFORM_ACTION:
             rX = random.randint(-1,1)
             rY = random.randint(-1,1)
             randX = self.loc[0]+rX
@@ -340,36 +328,133 @@ class indiv:
             if randY >= grid.sizeY:
                 randY = grid.sizeY-1
             newLoc = (randX,randY)
-            grid.updateIndex(self.loc,newLoc,self.index)
+            if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
             self.loc = newLoc
-                                                # Mrv = move reverse
-        if self.actionOutputs[3] > 0.5:
-            pass
-                                                
-                                                # MRL = move left/right (+/-)
-        if self.actionOutputs[4] > 0.5:
-            pass
+        # Mrv = move reverse
+        if self.actionOutputs[3] > self.PERFORM_ACTION:
+            if self.lastMoveDir == 0:
+                newLoc = (self.loc[0],max(0,self.loc[1]-1))
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                self.lastMoveDir = 2
+                self.loc = newLoc
+            elif self.lastMoveDir == 1:
+                newLoc = (max(0,self.loc[0]-1),self.loc[1])
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                self.lastMoveDir = 3
+                self.loc = newLoc
+            elif self.lastMoveDir == 2:
+                newLoc = (self.loc[0],min(grid.sizeY-1,self.loc[1]+1))
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                self.lastMoveDir = 0
+                self.loc = newLoc
+            else:
+                newLoc = (min(grid.sizeX-1,self.loc[0]+1),self.loc[1])
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                self.lastMoveDir = 1
+                self.loc = newLoc                              
+        # MRL = move left/right (+/-)
+        if self.actionOutputs[4] > self.PERFORM_ACTION:
+            if self.PERFORM_ACTION < (1-self.PERFORM_ACTION)/2: # left
+                if self.lastMoveDir == 0: 
+                    newLoc = (max(0,self.loc[0]-1),self.loc[1])
+                    if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 3
+                    self.loc = newLoc
+                elif self.lastMoveDir == 1:
+                    newLoc = (self.loc[0],min(self.loc[1]+1,grid.sizeY-1))
+                    if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 0
+                    self.loc = newLoc
+                elif self.lastMoveDir == 2:
+                    newLoc = (min(grid.sizeX-1,self.loc[0]+1),self.loc[1])
+                    if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 1
+                    self.loc = newLoc
+                else:
+                    newLoc = (self.loc[0],max(self.loc[1]-1,0))
+                    if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 2
+                    self.loc = newLoc
+            else:                                           # right
+                if self.lastMoveDir == 0: 
+                    newLoc = (min(grid.sizeX-1,self.loc[0]+1),self.loc[1])
+                    if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 1
+                    self.loc = newLoc
+                elif self.lastMoveDir == 1:
+                    newLoc = (self.loc[0],max(self.loc[1]-1,0))
+                    if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 2
+                    self.loc = newLoc
+                elif self.lastMoveDir == 2:
+                    newLoc = (min(0,self.loc[0]-1),self.loc[1])
+                    if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 3
+                    self.loc = newLoc
+                else:
+                    newLoc = (self.loc[0],min(self.loc[1]+1,grid.sizeY))
+                    if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                    self.lastMoveDir = 0
+                    self.loc = newLoc
     
         # MX = move east/west (+/-)
-        if self.actionOutputs[5] > 0.5:
-            if self.actionOutputs[5] < 0.75:# east
+        if self.actionOutputs[5] > self.PERFORM_ACTION:
+            if self.actionOutputs[5] < (1-self.PERFORM_ACTION)/2: # east
                 newX = self.loc[0]-1
                 if newX < 0:
                     newX = 0
                 newLoc = (newX,self.loc[1])
-                grid.updateIndex(self.loc,newLoc,self.index)
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
                 self.loc = newLoc
+                self.lastMoveDir = 1
             else:                           # west
                 newX = self.loc[0]+1
                 if newX >= grid.sizeX:
                     newX = grid.sizeX-1
                 newLoc = (newX,self.loc[1])
-                grid.updateIndex(self.loc,newLoc,self.index)
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
                 self.loc = newLoc
+                self.lastMoveDir = 3
+
         
-                                                # Mfd = move forward
-        if self.actionOutputs[6] > 0.5:
-            pass
+        # Mfd = move forward
+        if self.actionOutputs[6] > self.PERFORM_ACTION:
+            if self.lastMoveDir == 0:
+                newLoc = (self.loc[0],min(self.loc[1]+1,grid.sizeY-1))
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                self.loc = newLoc
+            elif self.lastMoveDir == 1:
+                newLoc = (min(self.loc[0]+1, grid.sizeX-1),self.loc[1])
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                self.loc = newLoc
+            elif self.lastMoveDir == 2:
+                newLoc = (self.loc[0],max(self.loc[1]-1,0))
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                self.loc = newLoc
+            else:
+                newLoc = (max(self.loc[0]-1, 0),self.loc[1])
+                if not grid.isOccupied(newLoc[0],newLoc[1]):
+                            grid.updateIndex(self.loc,newLoc,self.index)
+                self.loc = newLoc
+
         
     # use nnet to generate actions, and perform them
     def feedForward(self, simStep, grid):

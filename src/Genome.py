@@ -69,13 +69,14 @@ class Genome:
     def makeRandomGenome(self):
         genome = Genome()
         # genomeLength = random.randint(self.MIN_GENE_LENGTH, self.MAX_GENE_LENGTH)
-        genomeLength = 4
+        genomeLength = 10
         for i in range(genomeLength):
             self.GenomeList.append(self.makeRandomGene())
 
     def printGenome(self):
         for i in self.GenomeList:
-            print(i.sourceType)
+            print(str(i.sourceType),end=" ")
+        print()
 
     def breedGenomes(self, other):
         g = Genome()
@@ -86,7 +87,8 @@ class Genome:
             else:
                 g.GenomeList.append(other.GenomeList[i])
         return g
-    
+    def __init__(self):
+        self.GenomeList = []
     
 
 class Gene:
