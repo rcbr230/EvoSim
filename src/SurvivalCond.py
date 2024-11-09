@@ -5,7 +5,8 @@ class SurvivalConditions(Enum):
     LeftandRight = auto()
     Left = auto()
     Right = auto()
-    Center = auto()
     Top = auto()
     Bottom = auto()
     TopandBottom = auto()
+    Center = auto()
+

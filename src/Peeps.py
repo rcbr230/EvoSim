@@ -41,9 +41,13 @@ class Peeps:
                 for j in range(rightBounds,grid.sizeX):
                     if grid.gridInfo[j][i] != 0:
                         survivingPop.append(grid.gridInfo[j][i])
+        centerTopBound = int(grid.sizeY/3)
+        centerBotBound = centerTopBound*2
+        centerLeftBound = int(grid.sizeX/3)
+        cetnerRightBound = centerLeftBound*3
         if condition == SurvivalConditions.Center:
-            for i in range(topBounds, bottomBounds):
-                for j in range(leftBounds, rightBounds):
+            for i in range(centerTopBound, centerBotBound):
+                for j in range(centerLeftBound, cetnerRightBound):
                     if grid.gridInfo[j][i] != 0:
                         survivingPop.append(grid.gridInfo[j][i])
         if condition == SurvivalConditions.Top:
@@ -61,8 +65,8 @@ class Peeps:
                 for j in range(grid.sizeX):
                     if grid.gridInfo[j][i] != 0:
                         survivingPop.append(grid.gridInfo[j][i])
-            for i in range(bottomBounds, grid.sizeX):
-                for j in range(grid.sizeY):
+            for i in range(bottomBounds, grid.sizeY):
+                for j in range(grid.sizeX):
                     if grid.gridInfo[j][i] != 0:
                         survivingPop.append(grid.gridInfo[j][i])
         
