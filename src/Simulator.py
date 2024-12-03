@@ -38,7 +38,7 @@ root = TK.Tk()
 canvas = TK.Canvas(root, width=128*5, height=128*5)
 canvas.pack()
 
-# init and place the first generation onto the grid!!!
+# init and place the first generation onto the grid!!!  
 CreateGen0()
 grid.DrawGrid(canvas)
 
