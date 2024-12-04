@@ -56,7 +56,7 @@ class indiv:
     TOTAL_INTERNAL = 6
     TOTAL_ACTION   = 8
     MAX_PROBE_DIST = 5
-    PERFORM_ACTION = 1/32767
+    PERFORM_ACTION = 0.2
     MUTATION_RATE = 1
     def __init__(self, loc_:tuple, index_:int, genome_):
         self.alive = True
@@ -264,7 +264,8 @@ class indiv:
 
     def ActionTanH(self):
         for i in range(len(self.actionOutputs)):
-            self.actionOutputs[i] = math.tanh(self.actionOutputs[i])   
+            self.actionOutputs[i] = math.tanh(self.actionOutputs[i])
+             
 
     def RunActions(self,grid):
         # LPD = set long-probe distance      change later maybe
@@ -347,7 +348,7 @@ class indiv:
                     self.loc = newLoc                              
         # MRL = move left/right (+/-)
         if self.actionOutputs[4] > self.PERFORM_ACTION:
-            if self.actionOutputs[4] < self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/2: # left
+            if self.actionOutputs[4] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/2: # left
                 if self.lastMoveDir == 0: 
                     newLoc = (max(0,self.loc[0]-1),self.loc[1])
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
@@ -400,7 +401,7 @@ class indiv:
     
         # MX = move east/west (+/-)
         if self.actionOutputs[5] > self.PERFORM_ACTION:
-            if self.actionOutputs[5] < self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/2: # east
+            if self.actionOutputs[5] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/2: # west
                 newX = self.loc[0]-1
                 if newX < 0:
                     newX = 0
@@ -408,8 +409,8 @@ class indiv:
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
                     grid.updateIndex(self.loc,newLoc,self.index)
                     self.loc = newLoc
-                    self.lastMoveDir = 1
-            else:                           # west
+                    self.lastMoveDir = 3
+            else:                           # east
                 newX = self.loc[0]+1
                 if newX >= grid.sizeX:
                     newX = grid.sizeX-1
@@ -417,7 +418,7 @@ class indiv:
                 if not grid.isOccupied(newLoc[0],newLoc[1]):
                     grid.updateIndex(self.loc,newLoc,self.index)
                     self.loc = newLoc
-                    self.lastMoveDir = 3
+                    self.lastMoveDir = 1
 
         
         # Mfd = move forward

@@ -11,11 +11,16 @@ import tkinter as TK
 
 from SurvivalCond import SurvivalConditions
 
-MAX_GENERATIONS = 100
-MAX_STEPS = 100
-POP_SIZE = 1000
-GRID_X = 128
-GRID_Y = 128
+# MAX_GENERATIONS = 100
+# MAX_STEPS = 100
+# POP_SIZE = 1000
+# GRID_X = 128
+# GRID_Y = 128
+MAX_GENERATIONS =   int(input("How many generations: "))
+MAX_STEPS =         int(input("How many steps per generation: "))
+POP_SIZE =          int(input("What is the population size: "))
+GRID_X =            128
+GRID_Y =            128
 peeps = Peeps(POP_SIZE)
 grid = Grid(GRID_X,GRID_Y, peeps)
 generation = 1
@@ -99,8 +104,10 @@ with open('Gendata.csv','w') as f:
         writer.writerow(row)
 with open('GenomeData.csv','w') as f:
     writer = csv.writer(f)
-    for i in range(MAX_GENERATIONS):
+    for i in range(MAX_GENERATIONS-1,MAX_GENERATIONS):
+        indiv = 0
         for genome in GenomeData[i]:
+            indiv += 1
             for gene in genome.GenomeList:
                 geneStr = ''
                 geneStr = str(gene.sourceType)+' '
@@ -108,5 +115,5 @@ with open('GenomeData.csv','w') as f:
                 geneStr += str(gene.sinkType)+' '
                 geneStr += str(gene.sinkNum)+' '
                 geneStr += str(gene.weight)+' '
-                writer.writerow([str(i)]+[geneStr])
+                writer.writerow([str(i)]+[indiv]+[geneStr])
 exit(0)
