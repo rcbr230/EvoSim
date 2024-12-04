@@ -1,11 +1,11 @@
 
 import math
 import random
-import time
+import copy
 from Genome import Genome
 from NeuralNet import NeuralNet
 from enum import Enum
-from enum import auto
+
 """
 alive
 age
@@ -56,7 +56,8 @@ class indiv:
     TOTAL_INTERNAL = 6
     TOTAL_ACTION   = 8
     MAX_PROBE_DIST = 5
-    PERFORM_ACTION = 0.3
+    PERFORM_ACTION = 1/32767
+    MUTATION_RATE = 1
     def __init__(self, loc_:tuple, index_:int, genome_):
         self.alive = True
         self.index = index_
@@ -68,10 +69,13 @@ class indiv:
         self.lastMoveDir = random.randint(0,3) # 0-up, 1-right, 2-down, 3-left
         g = Genome()
         if genome_ != 0:
-            g = genome_
+            g = copy.deepcopy(genome_)
         else:
             g.makeRandomGenome()
         self.genome = g
+        mutate = random.randint(0,100)
+        if mutate < self.MUTATION_RATE:
+            self.genome.randomMutation()
         # stores as:
             # index is the sensor node. If the size > 0 then it exists
             # holds a (type, connection)
@@ -260,7 +264,7 @@ class indiv:
 
     def ActionTanH(self):
         for i in range(len(self.actionOutputs)):
-            self.actionOutputs[i] = math.tanh(self.actionOutputs[i])     
+            self.actionOutputs[i] = math.tanh(self.actionOutputs[i])   
 
     def RunActions(self,grid):
         # LPD = set long-probe distance      change later maybe

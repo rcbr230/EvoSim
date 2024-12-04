@@ -2,24 +2,28 @@
 This is the top level of the simulation that a user can interact with.
 
 """
-import copy
+import csv
 from enum import Enum, auto
 import random
 from Grid import Grid
 from Peeps import Peeps
 import tkinter as TK
-import time
 
 from SurvivalCond import SurvivalConditions
 
 MAX_GENERATIONS = 100
-MAX_STEPS = 128
+MAX_STEPS = 100
 POP_SIZE = 1000
 GRID_X = 128
 GRID_Y = 128
 peeps = Peeps(POP_SIZE)
 grid = Grid(GRID_X,GRID_Y, peeps)
-generation = 0
+generation = 1
+
+# data recording
+GenerationalData = []
+# format: GenNum, StartingPop, Survivors, Array of all genomes
+GenomeData = []
 
 
 def simStepOneIndividual(indiv, simStep, instance):
@@ -33,6 +37,12 @@ def CreateGen0():
         # peeps.individuals[i].CreateWiring()
         grid.setIndex(loc,i)
 
+def getGenomes():
+    ret = []
+    for i in range(1,POP_SIZE+1):
+        ret.append(peeps.getIndividual(i).genome)
+    return ret
+
 
 root = TK.Tk()
 canvas = TK.Canvas(root, width=128*5, height=128*5)
@@ -43,7 +53,9 @@ CreateGen0()
 grid.DrawGrid(canvas)
 
 
-while generation < MAX_GENERATIONS:
+while generation < MAX_GENERATIONS+1:
+    print("NEW GEN STARTING " + str(generation))
+
     for i in range(MAX_STEPS):
         canvas.delete("all")
         grid.DrawGrid(canvas)
@@ -51,10 +63,13 @@ while generation < MAX_GENERATIONS:
         for index in range(1, POP_SIZE+1):
             if peeps.getIndividual(index).isAlive():
                 simStepOneIndividual(peeps.getIndividual(index),i, index)
-
+    
     # CREATE NEW GEN FROM PREV GEN
-
     newGen = peeps.cull(grid,SurvivalConditions.LeftandRight)
+    # record data from current population
+    GenerationalData.append((generation,POP_SIZE,len(newGen)))
+    GenomeData.append(getGenomes())
+
     print("SURVIVED: " + str(len(newGen)))
     newGenomes = []
     for i in range(0,POP_SIZE):
@@ -68,6 +83,30 @@ while generation < MAX_GENERATIONS:
         peeps.initPeep(i,loc,newGenomes[i-1])
 
         grid.setIndex(loc,i)
-    print("NEW GEN STARTING " + str(generation+1))
+    count = 0
+    for i in range(grid.sizeX):
+        for j in range(grid.sizeY):
+            if grid.gridInfo[i][j] != 0:
+                count += 1
+    print(f"POP SIZE: {count}")
     generation += 1
-root.mainloop()
+
+
+# Output all the recorded data.
+with open('Gendata.csv','w') as f:
+    writer = csv.writer(f)
+    for row in GenerationalData:
+        writer.writerow(row)
+with open('GenomeData.csv','w') as f:
+    writer = csv.writer(f)
+    for i in range(MAX_GENERATIONS):
+        for genome in GenomeData[i]:
+            for gene in genome.GenomeList:
+                geneStr = ''
+                geneStr = str(gene.sourceType)+' '
+                geneStr += str(gene.sourceNum)+' '
+                geneStr += str(gene.sinkType)+' '
+                geneStr += str(gene.sinkNum)+' '
+                geneStr += str(gene.weight)+' '
+                writer.writerow([str(i)]+[geneStr])
+exit(0)

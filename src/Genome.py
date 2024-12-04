@@ -53,7 +53,7 @@ class Genome:
     INTERNAL_NEURONS = 3
     ACTION_NEURONS = 9  
     MIN_GENE_LENGTH = 2
-    MAX_GENE_LENGTH = 5
+    MAX_GENE_LENGTH = 10
     GenomeList = []
 
     def makeRandomGene(self):
@@ -63,20 +63,39 @@ class Genome:
         gene.sinkType = random.randint(0,1)
         gene.sinkNum = random.randint(0,127) # 2^7 -1
         gene.weight = 1/random.randint(1,65535) # 2^16 -1
+        # gene.weight = 1/random.randint(1,10000) # 2^16 -1
 
         return gene
-
+    
+    # flip a random bit in the genome
+    def randomMutation(self):
+        
+        rGene = random.randint(0,len(self.GenomeList)-1)
+        rPart = random.randint(0,4)
+        if rPart == 0:
+            self.GenomeList[rGene].sourceType = not self.GenomeList[rGene].sourceType
+        elif rPart == 1:
+            self.GenomeList[rGene].sourceNum = random.randint(0,127) # 2^7-1
+        elif rPart == 2:
+            self.GenomeList[rGene].sinkType = not self.GenomeList[rGene].sinkType
+        elif rPart == 3:
+            self.GenomeList[rGene].sinkNum = random.randint(0,127) # 2^7-1
+        else:
+            self.GenomeList[rGene].weight = 1/random.randint(1,65535) # 2^16 -1
+            
     def makeRandomGenome(self):
         genome = Genome()
         # genomeLength = random.randint(self.MIN_GENE_LENGTH, self.MAX_GENE_LENGTH)
-        genomeLength = 5
+        genomeLength = 10
         for i in range(genomeLength):
             self.GenomeList.append(self.makeRandomGene())
 
-    def printGenome(self):
-        for i in self.GenomeList:
-            print(str(i.sourceType),end=" ")
-        print()
+    def returnAsString(self):
+        genes = []
+        for gene in self.GenomeList:
+            src = '{0:01b}'.format(gene.sourceType)
+            genes.append(src)
+        return genes
 
     def breedGenomes(self, other):
         g = Genome()
