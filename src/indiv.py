@@ -348,7 +348,7 @@ class indiv:
                     self.loc = newLoc                              
         # MRL = move left/right (+/-)
         if self.actionOutputs[4] > self.PERFORM_ACTION:
-            if self.actionOutputs[4] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/2: # left
+            if self.actionOutputs[4] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/10: # left
                 if self.lastMoveDir == 0: 
                     newLoc = (max(0,self.loc[0]-1),self.loc[1])
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
@@ -401,7 +401,7 @@ class indiv:
     
         # MX = move east/west (+/-)
         if self.actionOutputs[5] > self.PERFORM_ACTION:
-            if self.actionOutputs[5] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/2: # west
+            if self.actionOutputs[5] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/10: # west
                 newX = self.loc[0]-1
                 if newX < 0:
                     newX = 0

@@ -81,7 +81,7 @@ class Genome:
         elif rPart == 3:
             self.GenomeList[rGene].sinkNum = random.randint(0,127) # 2^7-1
         else:
-            self.GenomeList[rGene].weight = 1/random.randint(1,65535) # 2^16 -1
+            self.GenomeList[rGene].weight = 1/random.randint(1,1000) # 2^16 -1
             
     def makeRandomGenome(self):
         genome = Genome()
