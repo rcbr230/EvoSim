@@ -387,7 +387,7 @@ class indiv:
                         self.lastMoveDir = 2
                         self.loc = newLoc
                 elif self.lastMoveDir == 2:
-                    newLoc = (min(0,self.loc[0]-1),self.loc[1])
+                    newLoc = (max(0,self.loc[0]-1),self.loc[1])
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
                         grid.updateIndex(self.loc,newLoc,self.index)
                         self.lastMoveDir = 3
