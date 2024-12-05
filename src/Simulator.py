@@ -8,17 +8,27 @@ import random
 from Grid import Grid
 from Peeps import Peeps
 import tkinter as TK
+import time
+import sys
 
 from SurvivalCond import SurvivalConditions
 
-# MAX_GENERATIONS = 100
-# MAX_STEPS = 100
-# POP_SIZE = 1000
-# GRID_X = 128
-# GRID_Y = 128
-MAX_GENERATIONS =   int(input("How many generations: "))
-MAX_STEPS =         int(input("How many steps per generation: "))
-POP_SIZE =          int(input("What is the population size: "))
+# take command line arguments if applicable
+MAX_GENERATIONS: int
+MAX_STEPS: int
+POP_SIZE: int
+if (len(sys.argv) == 4):
+    MAX_GENERATIONS = int(sys.argv[1])
+    MAX_STEPS = int(sys.argv[2])
+    POP_SIZE = int(sys.argv[3])
+else:
+    if (len(sys.argv) != 1):
+        print("Wrong number of arguments. Proper syntax options include:")
+        print("python3 Simulator.py")
+        print("python3 Simulator.py [number of generations] [steps per generation] [population size]")
+    MAX_GENERATIONS =   int(input("How many generations: "))
+    MAX_STEPS =         int(input("How many steps per generation: "))
+    POP_SIZE =          int(input("What is the population size: "))
 GRID_X =            128
 GRID_Y =            128
 peeps = Peeps(POP_SIZE)
@@ -68,6 +78,7 @@ while generation < MAX_GENERATIONS+1:
         for index in range(1, POP_SIZE+1):
             if peeps.getIndividual(index).isAlive():
                 simStepOneIndividual(peeps.getIndividual(index),i, index)
+        time.sleep(0.1)
     
     # CREATE NEW GEN FROM PREV GEN
     newGen = peeps.cull(grid,SurvivalConditions.LeftandRight)
