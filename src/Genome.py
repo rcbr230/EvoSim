@@ -163,7 +163,7 @@ class Genome:
         g = avgSinkNum / 127 * 255
         b = avgWeight * 255
         rv = "#" + Genome.intToHexTwoDig(int(r)) + Genome.intToHexTwoDig(int(g)) + Genome.intToHexTwoDig(int(b))
-        print("DEBUG: Color hex is " + rv)
+        # print("DEBUG: Color hex is " + rv)
         return rv
 
     

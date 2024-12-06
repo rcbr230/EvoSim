@@ -57,6 +57,7 @@ class indiv:
     TOTAL_ACTION   = 8
     MAX_PROBE_DIST = 5
     PERFORM_ACTION = 0.2
+    DIV = 7
     MUTATION_RATE = 1
     def __init__(self, loc_:tuple, index_:int, genome_):
         self.alive = True
@@ -348,7 +349,7 @@ class indiv:
                     self.loc = newLoc                              
         # MRL = move left/right (+/-)
         if self.actionOutputs[4] > self.PERFORM_ACTION:
-            if self.actionOutputs[4] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/10: # left
+            if self.actionOutputs[4] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/self.DIV: # left
                 if self.lastMoveDir == 0: 
                     newLoc = (max(0,self.loc[0]-1),self.loc[1])
                     if not grid.isOccupied(newLoc[0],newLoc[1]):
@@ -401,7 +402,7 @@ class indiv:
     
         # MX = move east/west (+/-)
         if self.actionOutputs[5] > self.PERFORM_ACTION:
-            if self.actionOutputs[5] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/10: # west
+            if self.actionOutputs[5] > self.PERFORM_ACTION + (1-self.PERFORM_ACTION)/self.DIV: # west
                 newX = self.loc[0]-1
                 if newX < 0:
                     newX = 0
@@ -445,7 +446,7 @@ class indiv:
                     self.loc = newLoc
         # MY = move north/south (+/-)
         if self.actionOutputs[7] > self.PERFORM_ACTION:
-            if self.actionOutputs[7] < self.PERFORM_ACTION+ (1-self.PERFORM_ACTION)/2: # south
+            if self.actionOutputs[7] < self.PERFORM_ACTION+ (1-self.PERFORM_ACTION)/self.DIV: # south
                 newY = self.loc[1]-1
                 if newY < 0:
                     newY = 0
