@@ -126,5 +126,5 @@ with open('GenomeData.csv','w') as f:
                 geneStr += str(gene.sinkType)+' '
                 geneStr += str(gene.sinkNum)+' '
                 geneStr += str(gene.weight)+' '
-                writer.writerow([str(i)]+[indiv]+[geneStr])
+                writer.writerow([str(i+1)]+[indiv]+[geneStr])
 exit(0)
