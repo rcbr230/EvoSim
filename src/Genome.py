@@ -106,6 +106,68 @@ class Genome:
             else:
                 g.GenomeList.append(other.GenomeList[i])
         return g
+    
+    #helper for getColor()
+    @staticmethod
+    def intToHexTwoDig(n):
+        rv = ""
+        sixteens = n // 16
+        ones = n % 16
+        #sixteens place
+        match sixteens:
+            case 10:
+                rv += "a"
+            case 11:
+                rv += "b"
+            case 12:
+                rv += "c"
+            case 13:
+                rv += "d"
+            case 14:
+                rv += "e"
+            case 15:
+                rv += "f"
+            case _: #0-9
+                rv += str(sixteens)
+        #ones place
+        match ones:
+            case 10:
+                rv += "a"
+            case 11:
+                rv += "b"
+            case 12:
+                rv += "c"
+            case 13:
+                rv += "d"
+            case 14:
+                rv += "e"
+            case 15:
+                rv += "f"
+            case _: #0-9
+                rv += str(ones)
+        return rv
+    
+    def getColor(self):
+        totalSourceNum = 0
+        totalSinkNum = 0
+        totalWeight = 0.0
+        for gene in self.GenomeList:
+            totalSourceNum += gene.sourceNum
+            totalSinkNum += gene.sinkNum
+            totalWeight += gene.weight
+        sz = len(self.GenomeList)
+        avgSourceNum = totalSourceNum / sz
+        avgSinkNum = totalSinkNum / sz
+        avgWeight = totalWeight / sz
+        r = avgSourceNum / 127 * 255
+        g = avgSinkNum / 127 * 255
+        b = avgWeight * 255
+        rv = "#" + Genome.intToHexTwoDig(int(r)) + Genome.intToHexTwoDig(int(g)) + Genome.intToHexTwoDig(int(b))
+        print("DEBUG: Color hex is " + rv)
+        return rv
+
+    
+
     def __init__(self):
         self.GenomeList = []
     
@@ -118,7 +180,7 @@ class Gene:
         self.sinkType = 0
         self.sinkNum = 0
         self.weight = 0
-
+    
     def printHex(self):
         strFormat = format(self.sourceType, '01b') + format(self.sourceNum, '07b') +  format(self.sinkType, '01b') +  format(self.sinkNum, '07b') +  format(self.weight, '016b')
         # print(hex(int(strFormat)))

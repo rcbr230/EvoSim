@@ -10,7 +10,7 @@ Grid holds all the data of what is where. It knows EMPTY, BARRIER, or some index
 
 """
 class Grid:
-    #peeps = []
+    peeps = []
     EMPTY = 0
     BARRIER = 0xffff
     
@@ -53,7 +53,7 @@ class Grid:
         for i in range(len(self.gridInfo)):
             for j in range(len(self.gridInfo)):
                 if self.gridInfo[i][j] != 0:
-                    canvas.create_oval(i*5,j*5,i*5+5,j*5+5,fill=clrs[self.gridInfo[i][j] % 5])
+                    canvas.create_oval(i*5,j*5,i*5+5,j*5+5,fill=self.peeps.getIndividual(self.gridInfo[i][j]).getGenome().getColor())
 
 
     
