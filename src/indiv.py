@@ -57,7 +57,7 @@ class indiv:
     TOTAL_ACTION   = 8
     MAX_PROBE_DIST = 5
     PERFORM_ACTION = 0.2
-    DIV = 7
+    DIV = 6
     MUTATION_RATE = 1
     def __init__(self, loc_:tuple, index_:int, genome_):
         self.alive = True
