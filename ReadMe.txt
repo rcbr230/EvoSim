@@ -21,3 +21,6 @@ Lets say the gene above is:
 This means that when this gene is used it will determine how far the nearest wall is, multiply that by the weight, and if it surpasses some condition it will perform the action.
 
 Once the dots have all moved the max number of steps the program will kill anything not near the left and right walls of the environment. Then it will use the survivors to breed them and create a new generation and start the process again.
+
+
+Hope that makes sense :P
